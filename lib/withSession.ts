@@ -4,7 +4,7 @@ declare module "iron-session" {
   interface IronSessionData {
     user?: {
       id: number;
-      setup: boolean;
+      setup?: boolean;
     };
   }
 }

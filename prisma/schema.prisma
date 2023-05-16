@@ -11,17 +11,19 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String?  @unique
-  phone     String?  @unique
-  name      String?
-  username  String?  @unique
-  Tweet     Tweet[]
-  Liked     Liked[]
-  Reply     Reply[]
-  Token     Token[]
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  email       String?  @unique
+  phone       String?  @unique
+  name        String
+  username    String   @unique
+  avatarColor String
+  setup       Boolean
+  Tweet       Tweet[]
+  Liked       Liked[]
+  Reply       Reply[]
+  Token       Token[]
 }
 
 model Token {

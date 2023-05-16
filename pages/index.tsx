@@ -34,11 +34,11 @@ const Home: NextPage = () => {
 
   // console.log(data);
 
-  const dummyTweets = [1, 2, 3, 4, 5, 6];
+  const dummyTweets = [1, 2, 3, 4, 5, 6, 7, 8];
 
   return (
-    <Layout seoTitle="Tweets">
-      <div className="flex flex-col px-10 py-5">
+    <Layout seoTitle="Tweets" hasNavBar>
+      <div className="text- flex flex-col px-10 py-5">
         {dummyTweets ? (
           <div className="flex flex-col space-y-4">
             {dummyTweets.map((tweet) => (

@@ -12,6 +12,14 @@ async function handler(
     where: {
       payload: token,
     },
+    include: {
+      user: {
+        select: {
+          id: true,
+          setup: true,
+        },
+      },
+    },
   });
   if (!foundToken)
     return res.status(404).json({
@@ -21,7 +29,7 @@ async function handler(
 
   req.session.user = {
     id: foundToken.userId,
-    setup: false,
+    setup: foundToken.user.setup || false,
   };
 
   await req.session.save();

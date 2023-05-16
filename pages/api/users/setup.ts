@@ -32,17 +32,16 @@ async function handler(
     data: {
       name,
       username,
+      setup: true,
     },
   });
 
   req.session.user = {
     id: currentUser.id,
-    setup: true,
+    setup: newUser.setup || true,
   };
 
   await req.session.save();
-
-  console.log(newUser);
 
   res.json({ ok: true });
 }

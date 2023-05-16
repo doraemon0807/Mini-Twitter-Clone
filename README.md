@@ -1,9 +1,5 @@
 # Mini Twitter Clone
 
-Setup:
-
-- choose your avatar during setup
-
 Layout:
 
 - add nav: all tweets / profile
