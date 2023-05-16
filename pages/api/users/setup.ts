@@ -7,30 +7,43 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const { token } = req.body;
-  const foundToken = await db.token.findUnique({
+  const {
+    body: { name, username },
+    session: { user },
+  } = req;
+
+  const currentUser = await db.user.findUnique({
     where: {
-      payload: token,
+      id: user?.id,
+    },
+    select: {
+      id: true,
     },
   });
-  if (!foundToken)
-    return res.status(404).json({
-      ok: false,
-      error: "The token is incorrect. Please try again.",
-    });
+
+  if (!currentUser) {
+    return res.json({ ok: false });
+  }
+
+  const newUser = await db.user.update({
+    where: {
+      id: currentUser.id,
+    },
+    data: {
+      name,
+      username,
+    },
+  });
 
   req.session.user = {
-    id: foundToken.userId,
-    setup: false,
+    id: currentUser.id,
+    setup: true,
   };
 
   await req.session.save();
 
-  await db.token.deleteMany({
-    where: {
-      userId: foundToken.userId,
-    },
-  });
+  console.log(newUser);
+
   res.json({ ok: true });
 }
 

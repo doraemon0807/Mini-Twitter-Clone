@@ -16,8 +16,8 @@ model User {
   updatedAt DateTime @updatedAt
   email     String?  @unique
   phone     String?  @unique
-  name      String
-  username  String   @unique
+  name      String?
+  username  String?  @unique
   Tweet     Tweet[]
   Liked     Liked[]
   Reply     Reply[]

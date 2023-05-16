@@ -40,24 +40,17 @@ const Enter: NextPage = () => {
   } = useForm<EnterForm>({
     mode: "onSubmit",
   });
-  const {
-    register: confirmRegister,
-    handleSubmit: confirmHandleSubmit,
-    formState: { errors: confirmFormErrors },
-  } = useForm<ConfirmForm>({
-    mode: "onSubmit",
-  });
+  const { register: confirmRegister, handleSubmit: confirmHandleSubmit } =
+    useForm<ConfirmForm>({
+      mode: "onSubmit",
+    });
 
   const [method, setMethod] = useState<"email" | "phone">("email");
 
-  const [inputValue, setInputValue] = useState<string | undefined>("");
-
-  const [enter, { loading: enterLoading, data: enterData, error: enterError }] =
+  const [enter, { loading: enterLoading, data: enterData }] =
     useMutation<EnterResult>("/api/users/enter");
-  const [
-    confirm,
-    { loading: confirmLoading, data: confirmData, error: confirmError },
-  ] = useMutation<ConfirmResult>("/api/users/confirm");
+  const [confirm, { loading: confirmLoading, data: confirmData }] =
+    useMutation<ConfirmResult>("/api/users/confirm");
 
   const onEmailClick = () => {
     setMethod("email");
@@ -71,7 +64,6 @@ const Enter: NextPage = () => {
 
   const onValid = (form: EnterForm) => {
     if (enterLoading) return;
-    setInputValue(form.email || form.phone);
     enter(form);
   };
 
@@ -90,36 +82,29 @@ const Enter: NextPage = () => {
 
   useEffect(() => {
     if (confirmData && confirmData.ok) {
-      router.push("/");
+      router.push("/setup");
     }
   }, [confirmData, router]);
 
   return (
     <Layout seoTitle="Connect">
       <div className="mt-20 px-4">
-        <h3 className="mb-20 px-20 text-[50px] font-medium leading-[1.3]">
-          See what's happening in the world right now.
-        </h3>
         {enterData?.ok ? (
-          <div>
+          <>
+            <h3 className="mb-20 px-20 text-[50px] font-medium leading-[1.3]">
+              The one-time password has been sent!
+            </h3>
             <div className="flex flex-col space-y-1 text-gray-900">
               {method === "email" ? (
                 <>
-                  <span>
-                    The code was sent to {" "}
-                    <span className="font-semibold">{inputValue}</span>. Please
-                    check your inbox.
-                  </span>
-                  <span>
+                  <span className="text-sm text-gray-900">
                     If you cannot find the email, make sure to check your junk
                     mail.
                   </span>
                 </>
               ) : method === "phone" ? (
-                <span>
-                  The code was sent to {" "}
-                  <span className="font-semibold">{inputValue}</span>. Please
-                  check your text message.
+                <span className="text-sm text-gray-900">
+                  Please check your text message.
                 </span>
               ) : null}
             </div>
@@ -141,9 +126,12 @@ const Enter: NextPage = () => {
                 <Button loading={confirmLoading} text="Confirm Token" />
               </div>
             </form>
-          </div>
+          </>
         ) : (
-          <div>
+          <>
+            <h3 className="mb-20 px-20 text-[50px] font-medium leading-[1.3]">
+              See what's happening in the world right now.
+            </h3>
             <div className="flex flex-col items-center">
               <h5 className="text-sm font-medium text-gray-500">
                 Enter using:
@@ -211,7 +199,7 @@ const Enter: NextPage = () => {
                 </div>
               )}
             </form>
-          </div>
+          </>
         )}
       </div>
     </Layout>
