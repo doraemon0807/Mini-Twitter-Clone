@@ -50,6 +50,8 @@ const Enter: NextPage = () => {
 
   const [method, setMethod] = useState<"email" | "phone">("email");
 
+  const [inputValue, setInputValue] = useState<string | undefined>("");
+
   const [enter, { loading: enterLoading, data: enterData, error: enterError }] =
     useMutation<EnterResult>("/api/users/enter");
   const [
@@ -69,6 +71,7 @@ const Enter: NextPage = () => {
 
   const onValid = (form: EnterForm) => {
     if (enterLoading) return;
+    setInputValue(form.email || form.phone);
     enter(form);
   };
 
@@ -93,12 +96,33 @@ const Enter: NextPage = () => {
 
   return (
     <Layout seoTitle="Connect">
-      <div className="mt-20">
+      <div className="mt-20 px-4">
         <h3 className="mb-20 px-20 text-[50px] font-medium leading-[1.3]">
           See what's happening in the world right now.
         </h3>
         {enterData?.ok ? (
           <div>
+            <div className="flex flex-col space-y-1 text-gray-900">
+              {method === "email" ? (
+                <>
+                  <span>
+                    The code was sent to {" "}
+                    <span className="font-semibold">{inputValue}</span>. Please
+                    check your inbox.
+                  </span>
+                  <span>
+                    If you cannot find the email, make sure to check your junk
+                    mail.
+                  </span>
+                </>
+              ) : method === "phone" ? (
+                <span>
+                  The code was sent to {" "}
+                  <span className="font-semibold">{inputValue}</span>. Please
+                  check your text message.
+                </span>
+              ) : null}
+            </div>
             <form
               onSubmit={confirmHandleSubmit(onConfirmValid)}
               className="mt-8 flex flex-col"
