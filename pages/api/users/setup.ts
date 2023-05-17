@@ -8,7 +8,7 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   const {
-    body: { name, username },
+    body: { name, username, description },
     session: { user },
   } = req;
 
@@ -32,6 +32,7 @@ async function handler(
     data: {
       name,
       username,
+      description,
       setup: true,
     },
   });

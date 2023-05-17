@@ -2,6 +2,7 @@ import Button from "@/components/button";
 import ErrorMessage from "@/components/errorMessage";
 import Input from "@/components/input";
 import Layout from "@/components/layout";
+import TextArea from "@/components/textarea";
 import useMutation from "@/lib/useMutation";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -11,6 +12,7 @@ import { useForm } from "react-hook-form";
 interface SetupForm {
   username: string;
   name: string;
+  description: string;
 }
 
 interface SetupResult {
@@ -75,6 +77,12 @@ const Setup: NextPage = () => {
             required
           />
           <ErrorMessage>{errors.username?.message}</ErrorMessage>
+          <TextArea
+            register={register("description")}
+            name="description"
+            label="Description"
+            placeholder="Talk about yourself..."
+          />
           <ErrorMessage>{data?.error}</ErrorMessage>
           <Button loading={loading} text="Confirm Token" />
         </form>

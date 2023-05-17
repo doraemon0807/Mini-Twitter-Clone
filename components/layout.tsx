@@ -3,6 +3,7 @@ import { cls } from "@/lib/utils";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import useUser from "../lib/useUser";
 
 interface LayoutProps {
   canGoBack?: boolean;
@@ -10,7 +11,6 @@ interface LayoutProps {
   children: React.ReactNode;
   seoTitle: string;
 }
-
 export default function Layout({
   canGoBack,
   hasNavBar,
@@ -27,6 +27,8 @@ export default function Layout({
   const goBack = () => {
     router.push(parentPath);
   };
+
+  const { user } = useUser();
 
   return (
     <div>
@@ -113,10 +115,14 @@ export default function Layout({
             )}
           </Link>
           <Link
-            href="/community"
+            href="/profile"
             className="flex flex-col items-center space-y-2"
           >
-            {router.pathname==="/profile" ? (<Avatar />) : (<Avatar unselect />)}
+            {router.pathname === "/profile" ? (
+              <Avatar color={user?.avatarColor} />
+            ) : (
+              <Avatar color={user?.avatarColor} unselect />
+            )}
           </Link>
         </nav>
       )}

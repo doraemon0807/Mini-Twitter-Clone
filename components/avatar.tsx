@@ -3,15 +3,22 @@ import { cls } from "@/lib/utils";
 interface AvatarProps {
   size?: "small" | "big";
   unselect?: boolean;
+  color?: string;
   [key: string]: any;
 }
 
-export default function Avatar({ size, unselect }: AvatarProps) {
+export default function Avatar({
+  size,
+  unselect,
+  color,
+  ...rest
+}: AvatarProps) {
   return (
     <div
+      {...rest}
+      style={{ backgroundColor: unselect ? "#f3f4f6" : `${color}` }}
       className={cls(
-        "relative overflow-hidden rounded-full bg-gray-100",
-        unselect ? "bg-gray-100" : "bg-red-500",
+        "relative overflow-hidden rounded-full",
         size === "small"
           ? "h-8 w-8"
           : size === "big"
@@ -25,10 +32,12 @@ export default function Avatar({ size, unselect }: AvatarProps) {
           size === "small"
             ? "-left-1 h-10 w-10"
             : size === "big"
-            ? "left-1 h-14 w-14"
+            ? "-left-2 h-20 w-20"
             : "-left-1 h-12 w-12"
         )}
         fill="currentColor"
+        stroke="black"
+        strokeWidth="0.1"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
       >

@@ -1,44 +1,49 @@
+import Avatar from "@/components/avatar";
 import Link from "next/link";
 
 interface TweetProp {
   id: number;
-  avatar: string;
+  avatarColor: string;
   name: string;
-  date: string;
+  username: string;
+  date: Date;
   description: string;
-  comments: number;
+  reply: number;
   liked: number;
 }
 
 export default function TweetPost({
   id,
-  avatar,
+  avatarColor,
   name,
+  username,
   date,
   description,
-  comments = 0,
+  reply = 0,
   liked = 0,
 }: TweetProp) {
   return (
     <Link href={`/tweet/${id}`}>
       <div className="flex cursor-pointer justify-start space-x-3 rounded-lg border p-3">
-        <div className="h-10 w-10 rounded-full bg-gray-500"></div>
+        <Avatar color={avatarColor} />
         <div className="flex flex-col space-y-3">
           <div className="flex space-x-2">
             <div className="flex flex-col">
               <div className="flex justify-start space-x-1">
-                <span className="text-sm font-medium text-gray-900">name</span>
-                <span className="text-sm text-gray-600">@username</span>
+                <span className="text-sm font-medium text-gray-900">
+                  {name}
+                </span>
+                <span className="text-sm text-gray-600">@{username}</span>
                 <span>·</span>
-                <span className="text-sm text-gray-600">postedTime</span>
+                <span className="text-sm text-gray-600">{date}</span>
               </div>
               <div className="-mt-1 flex justify-start text-sm text-gray-900">
-                <span>description</span>
+                <span>{description}</span>
               </div>
             </div>
           </div>
           <div className="flex items-center justify-start space-x-5">
-          <div className="flex items-center space-x-0.5 text-sm text-gray-600">
+            <div className="flex items-center space-x-0.5 text-sm text-gray-600">
               <svg
                 className="h-4 w-4"
                 fill="none"
@@ -53,7 +58,7 @@ export default function TweetPost({
                   d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                 ></path>
               </svg>
-              <span>{comments}</span>
+              <span>{reply}</span>
             </div>
             <div className="flex items-center space-x-0.5 text-sm text-gray-600">
               <svg
@@ -72,7 +77,6 @@ export default function TweetPost({
               </svg>
               <span>{liked}</span>
             </div>
-
           </div>
         </div>
       </div>

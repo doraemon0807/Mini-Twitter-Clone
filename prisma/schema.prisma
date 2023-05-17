@@ -20,6 +20,7 @@ model User {
   username    String   @unique
   avatarColor String
   setup       Boolean
+  description String?
   Tweet       Tweet[]
   Liked       Liked[]
   Reply       Reply[]
