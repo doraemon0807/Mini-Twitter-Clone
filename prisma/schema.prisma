@@ -21,10 +21,10 @@ model User {
   avatarColor String
   setup       Boolean
   description String?
-  Tweet       Tweet[]
-  Liked       Liked[]
-  Reply       Reply[]
-  Token       Token[]
+  tweet       Tweet[]
+  liked       Liked[]
+  reply       Reply[]
+  token       Token[]
 }
 
 model Token {
@@ -43,8 +43,8 @@ model Tweet {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   description String
-  Liked       Liked[]
-  Reply       Reply[]
+  liked       Liked[]
+  reply       Reply[]
 }
 
 model Liked {

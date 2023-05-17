@@ -1,7 +1,7 @@
 import db from "@/lib/db";
 import Avatar from "@/components/avatar";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { Tweet, User } from "@prisma/client";
+import { Reply, Tweet, User } from "@prisma/client";
 import {
   compactNumber,
   createdAgo,
@@ -11,20 +11,27 @@ import {
 import Layout from "@/components/layout";
 import useMutation from "@/lib/useMutation";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import useSWR from "swr";
-import { cls } from "@/lib/utils";
+import TextArea from "@/components/textarea";
+import Button from "@/components/button";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
-interface TweetWithUserAndCount extends Tweet {
+interface ReplyWithUser extends Reply {
   user: User;
+}
+
+interface TweetWithUserAndCountAndReply extends Tweet {
+  user: User;
+  reply: ReplyWithUser[];
   _count: {
-    Liked: number;
-    Reply: number;
+    liked: number;
+    reply: number;
   };
 }
 
 interface TweetResponse {
-  tweet: TweetWithUserAndCount;
+  tweet: TweetWithUserAndCountAndReply;
 }
 
 interface LikeResponse {
@@ -34,22 +41,32 @@ interface LikeResponse {
 
 interface CountResponse {
   ok: boolean;
-  tweetCount: TweetWithUserAndCount;
+  tweetCount: TweetWithUserAndCountAndReply;
   isLiked: boolean;
+}
+
+interface ReplyForm {
+  answer: string;
+}
+
+interface ReplyResponse {
+  ok: boolean;
+  reply: Reply;
 }
 
 const Counts = () => {
   const router = useRouter();
 
-  const [like, { data: likeData, loading: likeLoading }] =
-    useMutation<LikeResponse>(`/api/tweets/${router.query.id}/like`);
-
-  const { data: countData, mutate: countMutate } = useSWR<CountResponse>(
-    `/api/tweets/${router.query.id}/count`
+  const [like, { loading: likeLoading }] = useMutation<LikeResponse>(
+    `/api/tweets/${router.query.id}/like`
   );
 
-  const likedCompact = compactNumber(countData?.tweetCount._count.Liked || 0);
-  const replyCompact = compactNumber(countData?.tweetCount._count.Reply || 0);
+  const { data: countData, mutate: countMutate } = useSWR<CountResponse>(
+    router.query.id ? `/api/tweets/${router.query.id}/count` : null
+  );
+
+  const likedCompact = compactNumber(countData?.tweetCount._count.liked || 0);
+  const replyCompact = compactNumber(countData?.tweetCount._count.reply || 0);
 
   const onLikeClick = () => {
     if (!countData) return;
@@ -60,9 +77,9 @@ const Counts = () => {
           ...prev.tweetCount,
           _count: {
             ...prev.tweetCount._count,
-            Liked: prev.isLiked
-              ? prev.tweetCount._count.Liked - 1
-              : prev.tweetCount._count.Liked + 1,
+            liked: prev.isLiked
+              ? prev.tweetCount._count.liked - 1
+              : prev.tweetCount._count.liked + 1,
           },
         },
         isLiked: !prev.isLiked,
@@ -83,13 +100,13 @@ const Counts = () => {
             <div className="flex items-center space-x-0.5 text-sm text-gray-500">
               <span className="font-medium text-gray-900">{replyCompact}</span>
               <span>
-                {countData?.tweetCount._count.Reply === 1 ? "Reply" : "Replies"}
+                {countData?.tweetCount._count.reply === 1 ? "Reply" : "Replies"}
               </span>
             </div>
             <div className="flex items-center space-x-0.5 text-sm text-gray-500">
               <span className="font-medium text-gray-900">{likedCompact}</span>
               <span>
-                {countData?.tweetCount._count.Liked === 1 ? "Like" : "Likes"}
+                {countData?.tweetCount._count.liked === 1 ? "Like" : "Likes"}
               </span>
             </div>
           </div>
@@ -101,7 +118,7 @@ const Counts = () => {
               <svg
                 className="h-6 w-6"
                 fill="#22c55e"
-                stroke="currentColor"
+                stroke="#15803c"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -135,19 +152,72 @@ const Counts = () => {
   );
 };
 
-const Comments = () => {
-  return <div>COMMENTS HERE</div>;
+const Replies = () => {
+  const router = useRouter();
+  const { data } = useSWR<TweetResponse>(
+    router.query.id ? `/api/tweets/${router.query.id}` : null
+  );
+  return (
+    <>
+      {data?.tweet.reply.map((reply) => (
+        <div key={reply.id} className="flex items-start space-x-3">
+          <Avatar size="small" color={reply.user.avatarColor} />
+          <div className="flex flex-col">
+            <div className="flex items-center space-x-1">
+              <span className="block text-sm font-medium text-gray-700">
+                {reply.user.name}
+              </span>
+              <span className="text-sm text-gray-500">
+                @{reply.user.username}
+              </span>
+              <span className="text-sm text-gray-500">·</span>
+              <span className="text-sm text-gray-500">
+                {createdAgo(reply.createdAt)}
+              </span>
+            </div>
+            <p className="mt-2 text-gray-700">{reply.answer}</p>
+          </div>
+        </div>
+      ))}
+    </>
+  );
 };
 
 const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
   const createdAt = new Date(tweet.createdAt);
-
   const postedDate = formatDate(createdAt);
   const postedTime = formatTime(createdAt);
 
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ReplyForm>({ mode: "onSubmit" });
+
+  const { mutate } = useSWR(
+    router.query.id ? `/api/tweets/${router.query.id}` : null
+  );
+
+  const [postReply, { data: postReplyData, loading: postReplyLoading }] =
+    useMutation<ReplyResponse>(`/api/tweets/${router.query.id}/reply`);
+
+  const onValid = (form: ReplyForm) => {
+    if (postReplyLoading) return;
+    postReply(form);
+  };
+
+  useEffect(() => {
+    if (postReplyData && postReplyData.ok) {
+      reset();
+      mutate();
+    }
+  }, [postReplyData]);
+
   return (
     <Layout canGoBack seoTitle="Tweet">
-      <div className="flex flex-col justify-start space-y-5 rounded-lg border p-3">
+      <div className="mt-2 flex flex-col justify-start space-y-5 rounded-lg border p-3">
         <div className="flex space-x-2">
           <Avatar color={tweet.user.avatarColor} />
           <div className="flex flex-col">
@@ -172,7 +242,17 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
           </div>
           <Counts />
         </div>
-        <Comments />
+        <Replies />
+        <form onSubmit={handleSubmit(onValid)} className="px-4">
+          <TextArea
+            register={register("answer", {
+              required: "You must write your answer before replying.",
+            })}
+            placeholder="Reply to this Tweet!"
+          />
+          <span className="text-sm text-red-500">{errors.answer?.message}</span>
+          <Button loading={postReplyLoading} text="Reply" />
+        </form>
       </div>
     </Layout>
   );
@@ -207,10 +287,26 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
           avatarColor: true,
         },
       },
+      reply: {
+        select: {
+          answer: true,
+          id: true,
+          createdAt: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              avatarColor: true,
+            },
+          },
+        },
+        take: 10,
+      },
       _count: {
         select: {
-          Liked: true,
-          Reply: true,
+          liked: true,
+          reply: true,
         },
       },
     },

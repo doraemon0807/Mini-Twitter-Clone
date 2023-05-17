@@ -39,7 +39,7 @@ export default function Layout({
         <div className="relative flex w-full items-center justify-center">
           {canGoBack && (
             <button
-              className="absolute -left-4 hover:text-orange-500"
+              className="absolute -left-4 hover:text-green-500"
               onClick={goBack}
             >
               <svg

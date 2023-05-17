@@ -21,8 +21,8 @@ async function handler(
     select: {
       _count: {
         select: {
-          Liked: true,
-          Reply: true,
+          liked: true,
+          reply: true,
         },
       },
     },

@@ -36,8 +36,8 @@ async function handler(
         },
         _count: {
           select: {
-            Liked: true,
-            Reply: true,
+            liked: true,
+            reply: true,
           },
         },
       },
@@ -75,7 +75,7 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    methods: ["GET" || "POST"],
+    methods: ["GET", "POST"],
     handler,
     isPrivate: false,
   })

@@ -1,4 +1,5 @@
 import Button from "@/components/button";
+import ErrorMessage from "@/components/errorMessage";
 import Layout from "@/components/layout";
 import TextArea from "@/components/textarea";
 import useMutation from "@/lib/useMutation";
@@ -18,7 +19,11 @@ interface UploadTweetResult {
 }
 
 const Upload: NextPage = () => {
-  const { register, handleSubmit } = useForm<UploadTweetForm>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UploadTweetForm>({ mode: "onSubmit" });
 
   const router = useRouter();
 
@@ -26,6 +31,7 @@ const Upload: NextPage = () => {
     useMutation<UploadTweetResult>("/api/tweets");
 
   const onValid = (form: UploadTweetForm) => {
+    if (loading) return;
     postTweet(form);
   };
 
@@ -41,12 +47,15 @@ const Upload: NextPage = () => {
         <TextArea
           register={register("description", {
             required: "Please write the description.",
+            minLength: {
+              message: "Your Tweet must be longer than 5 letters.",
+              value: 5,
+            },
           })}
           name="description"
-          required
           placeholder="What do you have in mind?"
         />
-
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Button loading={loading} text="Post Tweet" />
       </form>
     </Layout>

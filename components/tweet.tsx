@@ -1,5 +1,5 @@
 import Avatar from "@/components/avatar";
-import createdAgo from "@/lib/timeConvert";
+import { createdAgo } from "@/lib/timeConvert";
 import Link from "next/link";
 
 interface TweetProp {

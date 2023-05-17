@@ -12,8 +12,8 @@ import Link from "next/link";
 interface TweetWithUserAndCount extends Tweet {
   user: User;
   _count: {
-    Liked: number;
-    Reply: number;
+    liked: number;
+    reply: number;
   };
 }
 
@@ -56,8 +56,8 @@ const Home: NextPage = () => {
                   username={tweet.user.username}
                   date={tweet.createdAt}
                   description={tweet.description}
-                  reply={tweet._count.Reply}
-                  liked={tweet._count.Liked}
+                  reply={tweet._count.reply}
+                  liked={tweet._count.liked}
                 />
               ))
             )}
@@ -130,8 +130,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
       },
       _count: {
         select: {
-          Liked: true,
-          Reply: true,
+          liked: true,
+          reply: true,
         },
       },
     },
