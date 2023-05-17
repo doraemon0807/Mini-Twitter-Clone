@@ -1,13 +1,11 @@
 import Button from "@/components/button";
-import Input from "@/components/input";
 import Layout from "@/components/layout";
 import TextArea from "@/components/textarea";
 import useMutation from "@/lib/useMutation";
 import { Tweet } from "@prisma/client";
 import type { NextPage } from "next";
-import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 interface UploadTweetForm {

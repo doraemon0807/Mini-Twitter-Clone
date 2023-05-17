@@ -1,5 +1,5 @@
 import Avatar from "@/components/avatar";
-import createdAgo from "@/lib/createdAgo";
+import createdAgo from "@/lib/timeConvert";
 import Link from "next/link";
 
 interface TweetProp {
@@ -36,9 +36,9 @@ export default function TweetPost({
                 <span className="text-sm font-medium text-gray-900">
                   {name}
                 </span>
-                <span className="text-sm text-gray-600">@{username}</span>
+                <span className="text-sm text-gray-500">@{username}</span>
                 <span>·</span>
-                <span className="text-xs text-gray-600">{ago}</span>
+                <span className="text-xs text-gray-500">{ago}</span>
               </div>
               <div className="flex justify-start text-sm text-gray-900">
                 <span>{description}</span>
@@ -46,7 +46,7 @@ export default function TweetPost({
             </div>
           </div>
           <div className="flex items-center justify-start space-x-5">
-            <div className="flex items-center space-x-0.5 text-sm text-gray-600">
+            <div className="flex items-center space-x-0.5 text-sm text-gray-500">
               <svg
                 className="h-4 w-4"
                 fill="none"
@@ -63,7 +63,7 @@ export default function TweetPost({
               </svg>
               <span>{reply}</span>
             </div>
-            <div className="flex items-center space-x-0.5 text-sm text-gray-600">
+            <div className="flex items-center space-x-0.5 text-sm text-gray-500">
               <svg
                 className="h-4 w-4"
                 fill="none"

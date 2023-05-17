@@ -1,4 +1,4 @@
-export default function createdAgo(createdAt: Date) {
+export function createdAgo(createdAt: Date) {
   const diff = Math.floor(
     (new Date().getTime() - new Date(createdAt).getTime()) / 1000
   );
@@ -62,4 +62,26 @@ export default function createdAgo(createdAt: Date) {
   };
   checkTimeDiff();
   return timeAgo;
+}
+
+export function compactNumber(data: number) {
+  return new Intl.NumberFormat("en-US", {
+    notation: "compact",
+  }).format(data);
+}
+
+export function formatDate(data: Date) {
+  return new Intl.DateTimeFormat("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(data);
+}
+
+export function formatTime(data: Date) {
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  }).format(data);
 }
