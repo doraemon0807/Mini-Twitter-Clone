@@ -48,26 +48,14 @@ const Home: NextPage = () => {
           <div className="flex flex-col space-y-4">
             {data.map((item) =>
               item.tweets.map((tweet) => (
-                <TweetPost
-                  key={tweet.id}
-                  id={tweet.id}
-                  avatarColor={tweet.user.avatarColor}
-                  name={tweet.user.name}
-                  username={tweet.user.username}
-                  date={tweet.createdAt}
-                  description={tweet.description}
-                  reply={tweet._count.reply}
-                  liked={tweet._count.liked}
-                />
+                <TweetPost tweet={tweet} key={tweet.id} />
               ))
             )}
           </div>
         ) : (
           <h1>Be the first one to tweet!</h1>
         )}
-      </div>
 
-      <div>
         <Link
           href="/tweet/post"
           className="group fixed bottom-32 right-8 cursor-pointer rounded-full border-transparent bg-green-400 p-4 text-white shadow-xl transition-colors"

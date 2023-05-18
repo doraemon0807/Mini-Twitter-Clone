@@ -115,10 +115,10 @@ export default function Layout({
             )}
           </Link>
           <Link
-            href="/profile"
+            href={`/profile/${user?.id}`}
             className="flex flex-col items-center space-y-2"
           >
-            {router.pathname === "/profile" ? (
+            {router.asPath === `/profile/${user?.id}` ? (
               <Avatar color={user?.avatarColor} />
             ) : (
               <Avatar color={user?.avatarColor} unselect />
