@@ -2,6 +2,7 @@
 
 Layout:
 
+- when scroll down change bg of header
 - add hove animation to nav bar
 
 Tweet:
@@ -11,12 +12,10 @@ Tweet:
 Profile:
 
 - able to edit profile info
-- see my tweets
-- see liked tweets
 
 Extra:
 
 - able to change profile background color?
 - saved tweets?
 - followers?
-- heart to replies?
+- likes to replies?

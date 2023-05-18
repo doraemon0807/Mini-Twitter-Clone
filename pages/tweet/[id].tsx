@@ -16,6 +16,7 @@ import TextArea from "@/components/textarea";
 import Button from "@/components/button";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface ReplyWithUser extends Reply {
   user: User;
@@ -183,26 +184,39 @@ const CountsReplies = () => {
           </button>
         </div>
       </div>
-      {data?.tweet.reply.map((reply) => (
-        <div key={reply.id} className="flex items-start space-x-3">
-          <Avatar size="small" color={reply.user.avatarColor} />
-          <div className="flex flex-col">
-            <div className="flex items-center space-x-1">
-              <span className="block text-sm font-medium text-gray-700">
-                {reply.user.name}
-              </span>
-              <span className="text-sm text-gray-500">
-                @{reply.user.username}
-              </span>
-              <span className="text-sm text-gray-500">·</span>
-              <span className="text-xs text-gray-500">
-                {createdAgo(reply.createdAt)}
-              </span>
+      <div className="space-y-2">
+        {data?.tweet.reply.map((reply) => (
+          <div
+            key={reply.id}
+            className="flex items-start space-x-3 rounded-lg border p-3 shadow-sm"
+          >
+            <Link href={`/profile/${reply.user.id}`}>
+              <Avatar size="small" color={reply.user.avatarColor} />
+            </Link>
+            <div className="flex flex-col">
+              <div className="flex items-center space-x-1">
+                <Link
+                  href={`/profile/${reply.user.id}`}
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  {reply.user.name}
+                </Link>
+                <Link
+                  href={`/profile/${reply.user.id}`}
+                  className="text-sm text-gray-500"
+                >
+                  @{reply.user.username}
+                </Link>
+                <span className="text-sm text-gray-500">·</span>
+                <span className="text-xs text-gray-500">
+                  {createdAgo(reply.createdAt)}
+                </span>
+              </div>
+              <p className="mt-2 text-gray-700">{reply.answer}</p>
             </div>
-            <p className="mt-2 text-gray-700">{reply.answer}</p>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
       <form onSubmit={handleSubmit(onValid)} className="px-4">
         <TextArea
           register={register("answer", {
@@ -225,18 +239,20 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
   return (
     <Layout canGoBack seoTitle="Tweet">
       <div className="mt-2 flex flex-col justify-start space-y-5 rounded-lg border p-5 shadow-sm">
-        <div className="flex space-x-2">
-          <Avatar color={tweet.user.avatarColor} />
-          <div className="flex flex-col">
-            <div className="flex flex-col items-start justify-center">
-              <span className="text-sm font-medium text-gray-900">
-                {tweet.user.name}
-              </span>
-              <span className="text-sm text-gray-500">
-                @{tweet.user.username}
-              </span>
+        <div className="flex">
+          <Link href={`/profile/${tweet.userId}`} className="flex space-x-2">
+            <Avatar color={tweet.user.avatarColor} />
+            <div className="flex flex-col">
+              <div className="flex flex-col items-start justify-center">
+                <span className="text-sm font-medium text-gray-900">
+                  {tweet.user.name}
+                </span>
+                <span className="text-sm text-gray-500">
+                  @{tweet.user.username}
+                </span>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
         <div className="flex justify-start text-base text-gray-900">
           <span>{tweet.description}</span>
