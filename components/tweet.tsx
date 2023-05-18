@@ -1,5 +1,5 @@
 import Avatar from "@/components/avatar";
-import { createdAgo } from "@/lib/timeConvert";
+import { formatDateShort } from "@/lib/timeConvert";
 import Link from "next/link";
 
 interface TweetProp {
@@ -23,11 +23,12 @@ export default function TweetPost({
   reply = 0,
   liked = 0,
 }: TweetProp) {
-  const ago = createdAgo(date);
+  const time = new Date(date);
+  const postedTime = formatDateShort(time);
 
   return (
     <Link href={`/tweet/${id}`}>
-      <div className="flex cursor-pointer justify-start space-x-3 rounded-lg border p-3">
+      <div className="flex cursor-pointer justify-start space-x-3 rounded-lg border p-3 shadow-sm">
         <Avatar color={avatarColor} />
         <div className="flex flex-col space-y-3">
           <div className="flex space-x-2">
@@ -38,7 +39,7 @@ export default function TweetPost({
                 </span>
                 <span className="text-sm text-gray-500">@{username}</span>
                 <span>·</span>
-                <span className="text-xs text-gray-500">{ago}</span>
+                <span className="text-xs text-gray-500">{postedTime}</span>
               </div>
               <div className="flex justify-start text-sm text-gray-900">
                 <span>{description}</span>

@@ -85,3 +85,10 @@ export function formatTime(data: Date) {
     second: "numeric",
   }).format(data);
 }
+
+export function formatDateShort(data: Date) {
+  return new Intl.DateTimeFormat("en-US", {
+    day: "2-digit",
+    month: "short",
+  }).format(data);
+}

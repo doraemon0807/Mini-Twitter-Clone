@@ -15,7 +15,7 @@ import useSWR from "swr";
 import TextArea from "@/components/textarea";
 import Button from "@/components/button";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ReplyWithUser extends Reply {
   user: User;
@@ -54,15 +54,20 @@ interface ReplyResponse {
   reply: Reply;
 }
 
-const Counts = () => {
+const CountsReplies = () => {
   const router = useRouter();
 
   const [like, { loading: likeLoading }] = useMutation<LikeResponse>(
     `/api/tweets/${router.query.id}/like`
   );
 
+  const [countUrl, setCountUrl] = useState("");
+  useEffect(() => {
+    setCountUrl(`/api/tweets/${router.query.id}/count`);
+  }, []);
+
   const { data: countData, mutate: countMutate } = useSWR<CountResponse>(
-    router.query.id ? `/api/tweets/${router.query.id}/count` : null
+    router.query.id ? countUrl : null
   );
 
   const likedCompact = compactNumber(countData?.tweetCount._count.liked || 0);
@@ -91,6 +96,36 @@ const Counts = () => {
       like({});
     }
   };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ReplyForm>({ mode: "onSubmit" });
+
+  const [postReply, { data: postReplyData, loading: postReplyLoading }] =
+    useMutation<ReplyResponse>(`/api/tweets/${router.query.id}/reply`);
+
+  const [url, setUrl] = useState("");
+  useEffect(() => {
+    setUrl(`/api/tweets/${router.query.id}`);
+  }, []);
+
+  const { data, mutate } = useSWR<TweetResponse>(router.query.id ? url : null);
+
+  const onValid = (form: ReplyForm) => {
+    if (postReplyLoading) return;
+    postReply(form);
+  };
+
+  useEffect(() => {
+    if (postReplyData && postReplyData.ok) {
+      reset();
+      mutate();
+      countMutate();
+    }
+  }, [postReplyData]);
 
   return (
     <>
@@ -148,17 +183,6 @@ const Counts = () => {
           </button>
         </div>
       </div>
-    </>
-  );
-};
-
-const Replies = () => {
-  const router = useRouter();
-  const { data } = useSWR<TweetResponse>(
-    router.query.id ? `/api/tweets/${router.query.id}` : null
-  );
-  return (
-    <>
       {data?.tweet.reply.map((reply) => (
         <div key={reply.id} className="flex items-start space-x-3">
           <Avatar size="small" color={reply.user.avatarColor} />
@@ -179,8 +203,24 @@ const Replies = () => {
           </div>
         </div>
       ))}
+      <form onSubmit={handleSubmit(onValid)} className="px-4">
+        <TextArea
+          register={register("answer", {
+            required: "You must write your answer before replying.",
+          })}
+          placeholder="Reply to this Tweet!"
+        />
+        <span className="text-sm text-red-500">{errors.answer?.message}</span>
+        <Button loading={postReplyLoading} text="Reply" />
+      </form>
     </>
   );
+};
+
+const Replies = () => {
+  const router = useRouter();
+
+  return <></>;
 };
 
 const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
@@ -188,36 +228,9 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
   const postedDate = formatDate(createdAt);
   const postedTime = formatTime(createdAt);
 
-  const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<ReplyForm>({ mode: "onSubmit" });
-
-  const { mutate } = useSWR(
-    router.query.id ? `/api/tweets/${router.query.id}` : null
-  );
-
-  const [postReply, { data: postReplyData, loading: postReplyLoading }] =
-    useMutation<ReplyResponse>(`/api/tweets/${router.query.id}/reply`);
-
-  const onValid = (form: ReplyForm) => {
-    if (postReplyLoading) return;
-    postReply(form);
-  };
-
-  useEffect(() => {
-    if (postReplyData && postReplyData.ok) {
-      reset();
-      mutate();
-    }
-  }, [postReplyData]);
-
   return (
     <Layout canGoBack seoTitle="Tweet">
-      <div className="mt-2 flex flex-col justify-start space-y-5 rounded-lg border p-3">
+      <div className="mt-2 flex flex-col justify-start space-y-5 rounded-lg border p-5 shadow-sm">
         <div className="flex space-x-2">
           <Avatar color={tweet.user.avatarColor} />
           <div className="flex flex-col">
@@ -240,19 +253,8 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
             <span>·</span>
             <span>{postedDate}</span>
           </div>
-          <Counts />
         </div>
-        <Replies />
-        <form onSubmit={handleSubmit(onValid)} className="px-4">
-          <TextArea
-            register={register("answer", {
-              required: "You must write your answer before replying.",
-            })}
-            placeholder="Reply to this Tweet!"
-          />
-          <span className="text-sm text-red-500">{errors.answer?.message}</span>
-          <Button loading={postReplyLoading} text="Reply" />
-        </form>
+        <CountsReplies />
       </div>
     </Layout>
   );
