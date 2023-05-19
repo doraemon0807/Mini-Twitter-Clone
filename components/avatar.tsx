@@ -3,6 +3,7 @@ import { cls } from "@/lib/utils";
 interface AvatarProps {
   size?: "small" | "big";
   unselect?: boolean;
+  select?: boolean;
   color?: string;
   [key: string]: any;
 }
@@ -10,6 +11,7 @@ interface AvatarProps {
 export default function Avatar({
   size,
   unselect,
+  select,
   color,
   ...rest
 }: AvatarProps) {
@@ -23,7 +25,11 @@ export default function Avatar({
           ? "h-8 w-8"
           : size === "big"
           ? "h-16 w-16"
-          : "h-10 w-10"
+          : "h-10 w-10",
+        select ? "rounded-full ring-4 ring-green-300 ring-offset-4" : "",
+        select || unselect
+          ? "transition-all hover:ring-4 hover:ring-green-300 hover:ring-offset-4"
+          : ""
       )}
     >
       <svg

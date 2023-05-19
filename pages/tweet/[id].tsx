@@ -152,9 +152,9 @@ const CountsReplies = () => {
           >
             {countData?.isLiked ? (
               <svg
-                className="h-6 w-6"
+                className="h-6 w-6 transition-colors"
                 fill="#22c55e"
-                stroke="#15803c"
+                stroke="#4ead71"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >

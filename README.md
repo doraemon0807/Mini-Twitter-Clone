@@ -1,21 +1,16 @@
 # Mini Twitter Clone
 
-Layout:
-
-- when scroll down change bg of header
-- add hove animation to nav bar
-
 Tweet:
 
 - able to delete tweets / replies
+- able to edit tweets
 
 Profile:
 
-- able to edit profile info
+- able to change profile background color?
 
 Extra:
 
-- able to change profile background color?
 - saved tweets?
 - followers?
 - likes to replies?

@@ -43,7 +43,7 @@ const Home: NextPage = () => {
 
   return (
     <Layout seoTitle="Tweets" hasNavBar>
-      <div className="text- flex flex-col px-10 py-5">
+      <div className="relative flex flex-col px-10 py-5">
         {data ? (
           <div className="flex flex-col space-y-4">
             {data.map((item) =>
@@ -58,7 +58,7 @@ const Home: NextPage = () => {
 
         <Link
           href="/tweet/post"
-          className="group fixed bottom-32 right-8 cursor-pointer rounded-full border-transparent bg-green-400 p-4 text-white shadow-xl transition-colors"
+          className="group sticky bottom-40 aspect-square w-14 -translate-x-8 cursor-pointer self-end rounded-full border-transparent bg-green-400 p-4 text-white shadow-xl transition-colors"
         >
           <svg
             className="h-6 w-6 transition-transform group-hover:rotate-90 group-hover:scale-150"

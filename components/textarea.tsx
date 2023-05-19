@@ -27,7 +27,7 @@ export default function TextArea({
       )}
       <textarea
         id={name}
-        className="mt-1 w-full rounded-md border-gray-300 shadow-sm placeholder:text-sm focus:border-green-500 focus:outline-none focus:ring-green-500"
+        className="mt-1 w-full rounded-md border-gray-300 shadow-sm transition-all placeholder:text-sm focus:border-green-500 focus:outline-none focus:ring-green-500"
         rows={4}
         placeholder={placeholder}
         {...register}
