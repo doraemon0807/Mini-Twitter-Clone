@@ -32,5 +32,11 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
     ) {
       return NextResponse.redirect(new URL("/", req.url));
     }
+
+    if (req.nextUrl.pathname === "/profile") {
+      return NextResponse.redirect(
+        new URL(`/profile/${session.user?.id}`, req.url)
+      );
+    }
   }
 }
