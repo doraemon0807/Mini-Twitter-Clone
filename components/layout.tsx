@@ -21,11 +21,12 @@ export default function Layout({
 
   const router = useRouter();
   let parentPath = router.pathname.split("/").slice(0, -1).join("/");
-  if (parentPath.includes("tweet")) {
-    parentPath = "/";
-  }
   const goBack = () => {
-    router.push(parentPath);
+    if (parentPath.includes("[id]")){
+      router.back()
+    } else {
+      router.push(parentPath)
+    }
   };
 
   const { user } = useUser();

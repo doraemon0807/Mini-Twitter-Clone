@@ -5,7 +5,6 @@ import Layout from "@/components/layout";
 import TextArea from "@/components/textarea";
 import useMutation from "@/lib/useMutation";
 import useUser from "@/lib/useUser";
-import { User } from "@prisma/client";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";

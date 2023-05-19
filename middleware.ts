@@ -38,5 +38,8 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
         new URL(`/profile/${session.user?.id}`, req.url)
       );
     }
+    if (req.nextUrl.pathname === "/tweet") {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
   }
 }

@@ -138,7 +138,9 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
               ""
             )}
           </div>
-          <p className="text-sm text-gray-700">{profile.description}</p>
+          <p className="box-border text-base text-gray-700">
+            {profile.description}
+          </p>
         </div>
         <div className="mt-10 flex justify-around">
           <div className="mt-8 grid w-full grid-cols-2 gap-16 border-b">
