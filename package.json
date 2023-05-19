@@ -10,7 +10,7 @@
   },
   "main": "pages/index.tsx",
   "dependencies": {
-    "@prisma/client": "^4.14.0",
+    "@prisma/client": "^4.14.1",
     "@tailwindcss/forms": "^0.5.3",
     "@types/node": "18.15.11",
     "@types/react": "18.0.37",
@@ -19,7 +19,6 @@
     "eslint-config-next": "13.3.0",
     "iron-session": "^6.3.1",
     "next": "^13.3.0",
-    "prisma": "^4.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
@@ -32,6 +31,7 @@
     "postcss": "^8.4.22",
     "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.7",
+    "prisma": "^4.14.1",
     "tailwindcss": "^3.3.1"
   },
   "license": "ISC",

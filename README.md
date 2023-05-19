@@ -3,7 +3,6 @@
 Tweet:
 
 - able to delete tweets / replies
-- able to edit tweets
 
 Profile:
 

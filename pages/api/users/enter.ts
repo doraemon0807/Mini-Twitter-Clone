@@ -23,7 +23,6 @@ async function handler(
           },
           create: {
             name: "Anonymous",
-            username: "Anonymous",
             avatarColor: randomColor(),
             setup: false,
             ...user,

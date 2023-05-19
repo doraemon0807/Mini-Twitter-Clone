@@ -19,7 +19,7 @@ export default function withHandler({
   handler,
 }: ConfigType) {
   return async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method && !methods.includes(req.method as any)) {
+    if (req.method && !methods.includes(req.method as method)) {
       return res.status(405).json({ ok: false });
     }
     if (isPrivate && !req.session.user) {

@@ -22,7 +22,19 @@ async function handler(
   });
 
   if (!currentUser) {
-    return res.json({ ok: false });
+    return res.json({ ok: false, error: "This user doesn't exist." });
+  }
+
+  const usernameAlreadyExist = Boolean(
+    await db.user.findUnique({
+      where: {
+        username,
+      },
+    })
+  );
+
+  if (usernameAlreadyExist) {
+    return res.json({ ok: false, error: "This username is already taken." });
   }
 
   const newUser = await db.user.update({

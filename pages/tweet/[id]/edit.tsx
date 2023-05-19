@@ -4,16 +4,14 @@ import ErrorMessage from "@/components/errorMessage";
 import Layout from "@/components/layout";
 import TextArea from "@/components/textarea";
 import useMutation from "@/lib/useMutation";
-import useTweet from "@/lib/useTweet";
 import { Tweet } from "@prisma/client";
 import type {
   GetServerSideProps,
   GetServerSidePropsContext,
   NextPage,
-  NextPageContext,
 } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 interface EditTweetForm {
@@ -59,7 +57,7 @@ const EditProfile: NextPage<EditTweetResult> = ({ tweet }) => {
       <form className="space-y-4 px-4" onSubmit={handleSubmit(onValid)}>
         <TextArea
           register={register("description", {
-            required: "Please write the description.",
+            required: "Please enter the description.",
             minLength: {
               message: "Your Tweet must be longer than 5 letters.",
               value: 5,
@@ -88,7 +86,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      tweet: JSON.parse(JSON.stringify(tweet))
+      tweet: JSON.parse(JSON.stringify(tweet)),
     },
   };
 };

@@ -46,7 +46,7 @@ const Upload: NextPage = () => {
       <form className="space-y-4 px-4" onSubmit={handleSubmit(onValid)}>
         <TextArea
           register={register("description", {
-            required: "Please write the description.",
+            required: "Please enter the description.",
             minLength: {
               message: "Your Tweet must be longer than 5 letters.",
               value: 5,

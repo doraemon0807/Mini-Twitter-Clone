@@ -18,6 +18,8 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import useUser from "@/lib/useUser";
+import Confirmation from "@/components/confirmation";
+import ReplyObject from "@/components/reply";
 
 interface ReplyWithUser extends Reply {
   user: User;
@@ -191,41 +193,13 @@ const CountsReplies = () => {
       </div>
       <div className="space-y-2">
         {data?.tweet.reply.map((reply) => (
-          <div
-            key={reply.id}
-            className="flex items-start space-x-3 rounded-lg border p-3 shadow-sm"
-          >
-            <Link href={`/profile/${reply.user.id}`}>
-              <Avatar size="small" color={reply.user.avatarColor} />
-            </Link>
-            <div className="flex flex-col">
-              <div className="flex items-center space-x-1">
-                <Link
-                  href={`/profile/${reply.user.id}`}
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  {reply.user.name}
-                </Link>
-                <Link
-                  href={`/profile/${reply.user.id}`}
-                  className="text-sm text-gray-500"
-                >
-                  @{reply.user.username}
-                </Link>
-                <span className="text-sm text-gray-500">·</span>
-                <span className="text-xs text-gray-500">
-                  {createdAgo(reply.createdAt)}
-                </span>
-              </div>
-              <p className="mt-2 text-gray-700">{reply.answer}</p>
-            </div>
-          </div>
+          <ReplyObject key={reply.id} reply={reply} />
         ))}
       </div>
       <form onSubmit={handleSubmit(onValid)} className="px-4">
         <TextArea
           register={register("answer", {
-            required: "You must write your answer before replying.",
+            required: "You must enter your answer before replying.",
           })}
           placeholder="Reply to this Tweet!"
         />
@@ -320,25 +294,13 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
                 </svg>
               </button>
               {deleteConfirm ? (
-                <div className="absolute right-0 top-10 h-auto w-56 space-y-2 rounded-xl border bg-white p-4 shadow-sm">
-                  <h5 className="text- text-center text-gray-900">
-                    Are you sure you want to delete this Tweet?
-                  </h5>
-                  <div className="flex justify-evenly">
-                    <button
-                      onClick={handleDelete}
-                      className="rounded-md border bg-green-500 px-2 py-1 text-sm text-white transition-colors hover:bg-green-600"
-                    >
-                      Delete
-                    </button>
-                    <button
-                      onClick={() => setDeleteConfirm(false)}
-                      className="rounded-md border bg-green-500 px-2 py-1 text-sm text-white transition-colors hover:bg-green-600"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
+                <Confirmation
+                  text="Are you sure you want to delete this Tweet?"
+                  button1="Delete"
+                  button2="Cancel"
+                  onClick1={handleDelete}
+                  onClick2={() => setDeleteConfirm(false)}
+                />
               ) : null}
             </div>
           ) : null}

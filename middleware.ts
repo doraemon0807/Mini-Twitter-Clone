@@ -1,5 +1,5 @@
 import { getIronSession } from "iron-session/edge";
-import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, userAgent } from "next/server";
 
 export const config = {
   matcher: ["/((?!api|_next/static|favicon.ico).*)"],
@@ -10,19 +10,27 @@ const cookieOptions = {
   password: process.env.COOKIE_PASSWORD!,
 };
 
-export async function middleware(req: NextRequest, ev: NextFetchEvent) {
+export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
   const session = await getIronSession(req, res, cookieOptions);
 
+  if (userAgent(req).isBot) {
+    return new Response("Please don't be a bot. Be human", { status: 403 });
+  }
+
   //check if user is logged in or not, then redirect to enter or home
-  if (!req.url.includes("/api")) {
+  if (!req.url.includes("/api") && !req.url.includes("/_next/image")) {
     //if user is MISSING and tries to get in
     if (!session.user && !req.url.includes("/enter")) {
       return NextResponse.redirect(new URL("/enter", req.url));
     }
     //if user is PRESENT but not SETUP, and tries to get in
-    if (session.user && !session.user.setup && !req.url.includes("/setup")) {
-      return NextResponse.redirect(new URL("/setup", req.url));
+    if (session.user && !session.user.setup) {
+      if (req.url.includes("/setup") || req.url.includes("/enter")) {
+        return;
+      } else {
+        return NextResponse.redirect(new URL("/setup", req.url));
+      }
     }
     //if user is SETUP and tries to go to enter or setup page
     if (

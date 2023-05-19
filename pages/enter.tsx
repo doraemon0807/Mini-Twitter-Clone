@@ -52,6 +52,23 @@ const Enter: NextPage = () => {
   const [confirm, { loading: confirmLoading, data: confirmData }] =
     useMutation<ConfirmResult>("/api/users/confirm");
 
+  const regions = [
+    {
+      name: "CA",
+      number: "+1",
+    },
+    {
+      name: "US",
+      number: "+1",
+    },
+    {
+      name: "KR",
+      number: "+82",
+    },
+  ];
+
+  const [regionIndex, setRegionIndex] = useState<number>(0);
+
   const onEmailClick = () => {
     setMethod("email");
     reset();
@@ -64,7 +81,15 @@ const Enter: NextPage = () => {
 
   const onValid = (form: EnterForm) => {
     if (enterLoading) return;
-    enter(form);
+    if (method === "phone") {
+      const regionNumber = regions[regionIndex].number;
+      const newForm = {
+        phone: regionNumber + form.phone,
+      };
+      enter(newForm);
+    } else {
+      enter(form);
+    }
   };
 
   const onConfirmValid = (form: ConfirmForm) => {
@@ -115,7 +140,7 @@ const Enter: NextPage = () => {
               <div className="space-y-3">
                 <Input
                   register={confirmRegister("token", {
-                    required: "Please write your token.",
+                    required: "Please enter your token.",
                   })}
                   name="token"
                   label="Confirmation Token"
@@ -139,7 +164,7 @@ const Enter: NextPage = () => {
               <div className="mt-8 grid w-full grid-cols-2 gap-16 border-b">
                 <button
                   className={cls(
-                    "border-b-2 pb-4 font-medium",
+                    "border-b-2 pb-4 font-medium transition-colors",
                     method === "email"
                       ? "border-green-500 text-green-500"
                       : "border-transparent text-gray-500"
@@ -150,7 +175,7 @@ const Enter: NextPage = () => {
                 </button>
                 <button
                   className={cls(
-                    "border-b-2 pb-4 font-medium",
+                    "border-b-2 pb-4 font-medium transition-colors",
                     method === "phone"
                       ? " border-green-500 text-green-500"
                       : "border-transparent text-gray-500"
@@ -169,11 +194,11 @@ const Enter: NextPage = () => {
                 <div className="space-y-3">
                   <Input
                     register={register("email", {
-                      required: "Please write your email address.",
+                      required: "Please enter your email address.",
                       validate: {
                         notEmail: (value) =>
                           value?.includes("@") ||
-                          "Please write a correct email address.",
+                          "Please enter a correct email address.",
                       },
                     })}
                     name="email"
@@ -188,11 +213,17 @@ const Enter: NextPage = () => {
                 <div className="space-y-3">
                   <Input
                     register={register("phone", {
-                      required: "Please write your phone number.",
+                      required: "Please enter your phone number.",
+                      pattern: {
+                        message: "Please enter a correct phone number.",
+                        value: /^\d[0-9]{5,12}$/,
+                      },
                     })}
                     name="phone"
                     label="Phone Number"
                     kind="phone"
+                    regions={regions}
+                    setRegionIndex={setRegionIndex}
                   />
                   <ErrorMessage>{enterFormErrors?.phone?.message}</ErrorMessage>
                   <Button loading={enterLoading} text="Get One-time Password" />

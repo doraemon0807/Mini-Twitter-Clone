@@ -43,7 +43,7 @@ const Setup: NextPage = () => {
   }, [data, router]);
 
   return (
-    <Layout seoTitle="Setup">
+    <Layout canGoBack seoTitle="Setup">
       <div className="mt-20 px-4">
         <h3 className="mb-20 px-20 text-[50px] font-medium leading-[1.3]">
           Let's set up your account!

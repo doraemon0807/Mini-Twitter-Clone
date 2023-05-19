@@ -4,13 +4,14 @@ import { cls } from "@/lib/utils";
 import { withSsrSession } from "@/lib/withSession";
 import { Liked, Tweet, User } from "@prisma/client";
 import { NextPage, NextPageContext } from "next";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import db from "@/lib/db";
 import { useRouter } from "next/router";
 import TweetPost from "@/components/tweet";
 import useSWRInfinite from "swr/infinite";
 import useInfiniteScroll from "@/lib/useInfiniteScroll";
+import Confirmation from "@/components/confirmation";
+import useMutation from "@/lib/useMutation";
 
 interface TweetWithUserAndCount extends Tweet {
   user: User;
@@ -114,13 +115,29 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
   const onLikedClick = () => {
     setMethod("liked");
   };
+  const router = useRouter();
+
+  const [logoutConfirm, setLogoutConfirm] = useState(false);
+
+  const [logout, { data, loading }] = useMutation(`/api/users/me/logout`);
+
+  const handleLogout = () => {
+    if (loading) return;
+    logout({});
+  };
+
+  useEffect(() => {
+    if (data && data.ok) {
+      router.push("/enter");
+    }
+  }, [router, data]);
 
   return (
     <Layout hasNavBar seoTitle="Profile">
       <div className="px-4 py-5">
         <div className="flex flex-col items-start space-y-3 px-6">
           <Avatar size="big" color={profile.avatarColor} />
-          <div className="flex w-full items-center justify-between">
+          <div className="flex w-full items-start justify-between">
             <div className="flex flex-col">
               <span className="text-lg font-semibold text-gray-900">
                 {profile.name}
@@ -129,14 +146,58 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
             </div>
 
             {myProfile ? (
-              <Link href="/profile/edit" className="">
-                <button className="w-full rounded-xl border border-transparent bg-green-500 px-2 py-1 text-sm font-medium text-white shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                  Edit Profile
+              <div className="relative flex space-x-2">
+                <button
+                  onClick={() => router.push("/profile/edit")}
+                  className="w-full rounded-xl border border-transparent bg-green-500 px-2 py-1 text-sm font-medium text-white shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                >
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    className="h-5 w-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                    />
+                  </svg>
                 </button>
-              </Link>
-            ) : (
-              ""
-            )}
+                <button
+                  onClick={() => setLogoutConfirm(true)}
+                  className="w-full rounded-xl border border-transparent bg-green-500 px-2 py-1 text-sm font-medium text-white shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                >
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    className="h-5 w-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5.636 5.636a9 9 0 1012.728 0M12 3v9"
+                    />
+                  </svg>
+                </button>
+                {logoutConfirm ? (
+                  <Confirmation
+                    text="Are you sure you want to logout?"
+                    button1="Logout"
+                    button2="Cancel"
+                    onClick1={handleLogout}
+                    onClick2={() => setLogoutConfirm(false)}
+                  />
+                ) : null}
+              </div>
+            ) : null}
           </div>
           <p className="box-border text-base text-gray-700">
             {profile.description}
