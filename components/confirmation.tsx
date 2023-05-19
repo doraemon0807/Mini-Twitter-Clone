@@ -20,7 +20,7 @@ export default function Confirmation({
       {...rest}
       className="absolute right-0 top-10 h-auto w-56 space-y-2 rounded-xl border bg-white p-4 shadow-sm"
     >
-      <h5 className="text-center text-base text-gray-900">{text}</h5>
+      <h5 className="text-center text-sm text-gray-800">{text}</h5>
       <div className="flex justify-evenly">
         <button
           onClick={onClick1}

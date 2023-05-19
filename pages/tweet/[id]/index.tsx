@@ -62,6 +62,10 @@ interface TweetDeleteResponse {
   ok: boolean;
 }
 
+interface ReplyDeleteResponse {
+  ok: boolean;
+}
+
 const CountsReplies = () => {
   const router = useRouter();
 
@@ -135,6 +139,23 @@ const CountsReplies = () => {
     }
   }, [postReplyData]);
 
+  const [replyId, setReplyId] = useState("");
+
+  const [deleteReply, { data: deleteReplyData, loading: deleteReplyLoading }] =
+    useMutation<ReplyDeleteResponse>(`/api/replies/${replyId}/delete`);
+
+  const handleDeleteReply = () => {
+    if (deleteReplyLoading) return;
+    deleteReply({});
+  };
+
+  useEffect(() => {
+    if (deleteReplyData && deleteReplyData.ok) {
+      reset();
+      mutate();
+      countMutate();
+    }
+  }, [deleteReplyData]);
   return (
     <>
       <div>
@@ -193,7 +214,12 @@ const CountsReplies = () => {
       </div>
       <div className="space-y-2">
         {data?.tweet.reply.map((reply) => (
-          <ReplyObject key={reply.id} reply={reply} />
+          <ReplyObject
+            key={reply.id}
+            reply={reply}
+            handleDeleteReply={handleDeleteReply}
+            setReplyId={setReplyId}
+          />
         ))}
       </div>
       <form onSubmit={handleSubmit(onValid)} className="px-4">
@@ -223,7 +249,7 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
 
   const { user } = useUser();
 
-  const handleDelete = () => {
+  const handleDeleteTweet = () => {
     if (loading) return;
     deleteTweet({});
   };
@@ -298,7 +324,7 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
                   text="Are you sure you want to delete this Tweet?"
                   button1="Delete"
                   button2="Cancel"
-                  onClick1={handleDelete}
+                  onClick1={handleDeleteTweet}
                   onClick2={() => setDeleteConfirm(false)}
                 />
               ) : null}

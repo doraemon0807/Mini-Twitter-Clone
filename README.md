@@ -1,12 +1,12 @@
 # Mini Twitter Clone
 
-Tweet:
-
-- able to delete tweets / replies
-
 Profile:
 
 - able to change profile background color?
+
+Genera:
+
+- 404 error page?
 
 Extra:
 
