@@ -8,7 +8,7 @@ export default function NavBar() {
   const { user } = useUser();
 
   return (
-    <nav className="fixed bottom-0 flex w-full max-w-xl items-center justify-evenly border-t bg-white px-10 py-5 text-gray-800">
+    <nav className="fixed bottom-0 flex w-full max-w-xl items-center justify-evenly bg-white px-10 py-5 text-gray-800">
       <Link href="/" className="flex h-12 w-12 flex-col items-center">
         {router.pathname === "/" ? (
           <svg
@@ -29,7 +29,7 @@ export default function NavBar() {
         ) : (
           <svg
             fill="none"
-            stroke="gray"
+            stroke="#c7c7c7"
             strokeWidth={1.2}
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"

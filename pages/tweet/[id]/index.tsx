@@ -2,12 +2,7 @@ import db from "@/lib/db";
 import Avatar from "@/components/avatar";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { Reply, Tweet, User } from "@prisma/client";
-import {
-  compactNumber,
-  createdAgo,
-  formatDate,
-  formatTime,
-} from "@/lib/timeConvert";
+import { compactNumber, formatDate, formatTime } from "@/lib/timeConvert";
 import Layout from "@/components/layout";
 import useMutation from "@/lib/useMutation";
 import { useRouter } from "next/router";
@@ -262,7 +257,7 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
 
   return (
     <Layout canGoBack seoTitle="Tweet">
-      <div className="mt-2 flex flex-col justify-start space-y-5 rounded-lg border p-5 shadow-sm">
+      <div className="mx-3 mt-2 flex flex-col justify-start space-y-5 rounded-lg border p-5 shadow-sm">
         <div className="flex justify-between">
           <Link href={`/profile/${tweet.userId}`} className="flex space-x-2">
             <Avatar color={tweet.user.avatarColor} />
