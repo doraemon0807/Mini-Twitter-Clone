@@ -2,6 +2,7 @@ import Avatar from "@/components/avatar";
 import useUser from "@/lib/useUser";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Tooltip } from "react-tooltip";
 
 export default function NavBar() {
   const router = useRouter();
@@ -9,7 +10,12 @@ export default function NavBar() {
 
   return (
     <nav className="fixed bottom-0 flex w-full max-w-xl items-center justify-evenly bg-white px-10 py-5 text-gray-800">
-      <Link href="/" className="flex h-12 w-12 flex-col items-center">
+      <Link
+        href="/"
+        className="flex h-12 w-12 flex-col items-center"
+        data-tooltip-id="allTweets"
+        data-tooltip-content="All Tweets"
+      >
         {router.pathname === "/" ? (
           <svg
             fill="none"
@@ -44,9 +50,12 @@ export default function NavBar() {
           </svg>
         )}
       </Link>
+      <Tooltip id="allTweets" delayShow={300} className="tooltip" />
       <Link
         href={`/profile/${user?.id}`}
         className="flex flex-col items-center space-y-2"
+        data-tooltip-id="myProfile"
+        data-tooltip-content="My Profile"
       >
         {router.asPath === `/profile/${user?.id}` ? (
           <Avatar color={"#f3f4f6"} select />
@@ -54,6 +63,7 @@ export default function NavBar() {
           <Avatar color={"#f3f4f6"} unselect />
         )}
       </Link>
+      <Tooltip id="myProfile" delayShow={300} className="tooltip" />
     </nav>
   );
 }

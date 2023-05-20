@@ -5,6 +5,7 @@ import useUser from "@/lib/useUser";
 import { Reply, User } from "@prisma/client";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useState } from "react";
+import { Tooltip } from "react-tooltip";
 
 interface ReplyWithUser extends Reply {
   user: User;
@@ -58,7 +59,9 @@ export default function ReplyObject({
       {reply.user.id === user?.id ? (
         <div className="relative text-gray-400">
           <button
-            className="hover:text-green-500"
+            data-tooltip-id="deleteReply"
+            data-tooltip-content="Delete this Reply"
+            className="rounded-lg border border-white p-1 hover:border-gray-200 hover:text-green-500 hover:shadow-sm"
             onClick={() => {
               setReplyId(String(reply.id));
               setDeleteConfirm(true);
@@ -80,6 +83,8 @@ export default function ReplyObject({
               />
             </svg>
           </button>
+
+          <Tooltip id="deleteReply" delayShow={300} className="tooltip" />
           {deleteConfirm ? (
             <Confirmation
               text="Are you sure you want to delete this reply?"

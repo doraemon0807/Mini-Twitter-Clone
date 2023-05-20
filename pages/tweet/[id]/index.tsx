@@ -15,6 +15,7 @@ import Link from "next/link";
 import useUser from "@/lib/useUser";
 import Confirmation from "@/components/confirmation";
 import ReplyObject from "@/components/reply";
+import { Tooltip } from "react-tooltip";
 
 interface ReplyWithUser extends Reply {
   user: User;
@@ -233,6 +234,13 @@ const CountsReplies = () => {
 
 const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
   const router = useRouter();
+
+  useEffect(() => {
+    if (!tweet) {
+      router.push("/404");
+    }
+  }, [tweet, router]);
+
   const createdAt = new Date(tweet.createdAt);
   const postedDate = formatDate(createdAt);
   const postedTime = formatTime(createdAt);
@@ -273,9 +281,11 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
             </div>
           </Link>
           {tweet.user.id === user?.id ? (
-            <div className="relative space-x-3 text-gray-400">
+            <div className="relative space-x-1 text-gray-400">
               <button
-                className="hover:text-green-500"
+                data-tooltip-id="editTweet"
+                data-tooltip-content="Edit this Tweet"
+                className="rounded-lg border border-white p-2 hover:border-gray-200 hover:text-green-500 hover:shadow-sm"
                 onClick={() => router.push(`/tweet/${router.query.id}/edit`)}
               >
                 <svg
@@ -294,8 +304,11 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
                   />
                 </svg>
               </button>
+              <Tooltip id="editTweet" delayShow={300} className="tooltip" />
               <button
-                className="hover:text-green-500"
+                data-tooltip-id="deleteTweet"
+                data-tooltip-content="Delete this Tweet"
+                className="rounded-lg border border-white p-2 hover:border-gray-200 hover:text-green-500 hover:shadow-sm"
                 onClick={() => setDeleteConfirm(true)}
               >
                 <svg
@@ -314,6 +327,7 @@ const TweetDetail: NextPage<TweetResponse> = ({ tweet }) => {
                   />
                 </svg>
               </button>
+              <Tooltip id="deleteTweet" delayShow={300} className="tooltip" />
               {deleteConfirm ? (
                 <Confirmation
                   text="Are you sure you want to delete this Tweet?"
@@ -352,7 +366,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
   if (!ctx.params?.id) {
     return {
-      props: {},
+      notFound: true,
     };
   }
 
@@ -395,6 +409,12 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       },
     },
   });
+
+  if (!tweet) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {

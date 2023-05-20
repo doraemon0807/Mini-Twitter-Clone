@@ -1,5 +1,10 @@
 import { getIronSession } from "iron-session/edge";
-import { NextRequest, NextResponse, userAgent } from "next/server";
+import {
+  NextFetchEvent,
+  NextRequest,
+  NextResponse,
+  userAgent,
+} from "next/server";
 
 export const config = {
   matcher: ["/((?!api|_next/static|favicon.ico).*)"],

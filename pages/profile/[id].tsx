@@ -12,6 +12,7 @@ import useSWRInfinite from "swr/infinite";
 import useInfiniteScroll from "@/lib/useInfiniteScroll";
 import Confirmation from "@/components/confirmation";
 import useMutation from "@/lib/useMutation";
+import { Tooltip } from "react-tooltip";
 
 interface TweetWithUserAndCount extends Tweet {
   user: User;
@@ -146,10 +147,12 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
             </div>
 
             {myProfile ? (
-              <div className="relative flex space-x-2">
+              <div className="relative flex space-x-2 text-gray-600">
                 <button
+                  data-tooltip-id="editProfile"
+                  data-tooltip-content="Edit my Profile"
                   onClick={() => router.push("/profile/edit")}
-                  className="w-full rounded-xl border border-transparent bg-green-500 px-2 py-1 text-sm font-medium text-white shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  className="rounded-lg border border-white p-2 hover:border-gray-200 hover:text-green-500 hover:shadow-sm"
                 >
                   <svg
                     fill="none"
@@ -167,9 +170,12 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
                     />
                   </svg>
                 </button>
+                <Tooltip id="editProfile" delayShow={300} className="tooltip" />
                 <button
+                  data-tooltip-id="logout"
+                  data-tooltip-content="Log Out"
                   onClick={() => setLogoutConfirm(true)}
-                  className="w-full rounded-xl border border-transparent bg-green-500 px-2 py-1 text-sm font-medium text-white shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  className="rounded-lg border border-white p-2 hover:border-gray-200 hover:text-green-500 hover:shadow-sm"
                 >
                   <svg
                     fill="none"
@@ -187,6 +193,7 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
                     />
                   </svg>
                 </button>
+                <Tooltip id="logout" delayShow={300} className="tooltip" />
                 {logoutConfirm ? (
                   <Confirmation
                     text="Are you sure you want to logout?"
@@ -255,7 +262,7 @@ export const getServerSideProps = withSsrSession(async function ({
 
   if (!profile) {
     return {
-      props: {},
+      notFound: true,
     };
   }
 
