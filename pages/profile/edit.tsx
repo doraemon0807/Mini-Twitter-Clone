@@ -1,3 +1,4 @@
+import Avatar from "@/components/avatar";
 import Button from "@/components/button";
 import ErrorMessage from "@/components/errorMessage";
 import Input from "@/components/input";
@@ -5,9 +6,10 @@ import Layout from "@/components/layout";
 import TextArea from "@/components/textarea";
 import useMutation from "@/lib/useMutation";
 import useUser from "@/lib/useUser";
+import { randColor } from "@/lib/utils";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface EditProfileForm {
@@ -46,7 +48,13 @@ const Upload: NextPage = () => {
 
   const onValid = (form: EditProfileForm) => {
     if (loading) return;
-    editProfile(form);
+
+    const newForm = {
+      ...form,
+      avatarColor: selectColor === "" ? user?.avatarColor : selectColor,
+    };
+
+    editProfile(newForm);
   };
 
   useEffect(() => {
@@ -63,12 +71,36 @@ const Upload: NextPage = () => {
     }
   }, [data, router]);
 
+  const [selectColor, setSelectColor] = useState("");
+
+  const handleColorClick = (color: string) => {
+    setSelectColor(color);
+  };
+
   return (
     <Layout canGoBack seoTitle="Edit Profile">
+      <div className="align-center my-8 flex justify-around">
+        <div className="rounded-full shadow-sm">
+          <Avatar
+            size="big"
+            color={selectColor === "" ? user?.avatarColor : selectColor}
+          />
+        </div>
+        <div className="grid grid-cols-9 place-content-center gap-2">
+          {randColor.map((color, i) => (
+            <button
+              key={i}
+              className="cursor h-8 w-8 place-self-center rounded-full shadow-xl ring-offset-4 focus:h-7 focus:w-7 focus:ring-2"
+              style={{ backgroundColor: color }}
+              onClick={() => handleColorClick(color)}
+            ></button>
+          ))}
+        </div>
+      </div>
       <form
         onSubmit={handleSubmit(onValid)}
         onChange={() => clearErrors()}
-        className="space-y-4 px-6"
+        className="mt-6 space-y-4 px-6"
       >
         <Input
           register={register("name", {

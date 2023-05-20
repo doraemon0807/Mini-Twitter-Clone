@@ -24,7 +24,7 @@ export default function Avatar({
         size === "small"
           ? "h-8 w-8"
           : size === "big"
-          ? "h-16 w-16"
+          ? "h-20 w-20"
           : "h-10 w-10",
         select ? "rounded-full ring-4 ring-green-300 ring-offset-4" : "",
         select || unselect
@@ -38,12 +38,12 @@ export default function Avatar({
           size === "small"
             ? "-left-1 h-10 w-10"
             : size === "big"
-            ? "-left-2 h-20 w-20"
+            ? "-left-2 h-24 w-24"
             : "-left-1 h-12 w-12"
         )}
         fill="currentColor"
-        stroke="black"
-        strokeWidth="0.1"
+        stroke="#56585c"
+        strokeWidth="0.2"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
       >

@@ -171,13 +171,13 @@ const CountsReplies = () => {
           </div>
           <button
             onClick={onLikeClick}
-            className="flex items-center space-x-0.5 text-sm text-gray-500"
+            className="flex items-center space-x-0.5 text-sm text-gray-500 hover:text-green-500"
           >
             {countData?.isLiked ? (
               <svg
                 className="h-6 w-6 transition-colors"
-                fill="#22c55e"
-                stroke="#4ead71"
+                fill="#24d665"
+                stroke="#5bc481"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >

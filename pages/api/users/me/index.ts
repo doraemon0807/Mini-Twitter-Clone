@@ -25,7 +25,7 @@ async function handler(
 
   if (req.method === "POST") {
     const {
-      body: { name, username, description },
+      body: { name, username, description, avatarColor },
       session: { user },
     } = req;
 
@@ -58,6 +58,7 @@ async function handler(
         username,
         name,
         description,
+        avatarColor,
       },
     });
 

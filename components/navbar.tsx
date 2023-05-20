@@ -49,9 +49,9 @@ export default function NavBar() {
         className="flex flex-col items-center space-y-2"
       >
         {router.asPath === `/profile/${user?.id}` ? (
-          <Avatar color={user?.avatarColor} select />
+          <Avatar color={"#f3f4f6"} select />
         ) : (
-          <Avatar color={user?.avatarColor} unselect />
+          <Avatar color={"#f3f4f6"} unselect />
         )}
       </Link>
     </nav>

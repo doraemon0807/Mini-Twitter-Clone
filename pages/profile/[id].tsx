@@ -207,7 +207,7 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
           <div className="mt-8 grid w-full grid-cols-2 gap-16 border-b">
             <button
               className={cls(
-                "border-b-2 pb-4 font-medium",
+                "border-b-2 pb-4 font-medium transition-colors",
                 method === "tweet"
                   ? "border-green-500 text-green-500"
                   : "border-transparent text-gray-500"
@@ -218,7 +218,7 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
             </button>
             <button
               className={cls(
-                "border-b-2 pb-4 font-medium",
+                "border-b-2 pb-4 font-medium transition-colors",
                 method === "liked"
                   ? " border-green-500 text-green-500"
                   : "border-transparent text-gray-500"

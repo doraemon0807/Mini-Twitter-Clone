@@ -2,7 +2,7 @@ import db from "@/lib/db";
 import withHandler, { ResponseType } from "@/lib/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withApiSession } from "@/lib/withSession";
-import { randomColor } from "@/lib/utils";
+import { randColor, randomColorPicker } from "@/lib/utils";
 
 async function handler(
   req: NextApiRequest,
@@ -23,7 +23,7 @@ async function handler(
           },
           create: {
             name: "Anonymous",
-            avatarColor: randomColor(),
+            avatarColor: randomColorPicker(randColor),
             setup: false,
             ...user,
           },
