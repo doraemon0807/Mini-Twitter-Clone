@@ -22,10 +22,10 @@ export default function Avatar({
       className={cls(
         "relative overflow-hidden rounded-full",
         size === "small"
-          ? "h-8 w-8"
+          ? "h-8 w-8 min-w-[40px]"
           : size === "big"
-          ? "h-20 w-20"
-          : "h-10 w-10",
+          ? "h-20 w-20 min-w-[80px]"
+          : "h-10 w-10 min-w-[40px]",
         select ? "rounded-full ring-4 ring-green-300 ring-offset-4" : "",
         select || unselect
           ? "transition-all hover:ring-4 hover:ring-green-300 hover:ring-offset-4"

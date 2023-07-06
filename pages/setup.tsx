@@ -129,7 +129,7 @@ const Setup: NextPage = () => {
             placeholder="Talk about yourself..."
           />
 
-          <Button loading={loading} text="Confirm Token" />
+          <Button loading={loading} text="Let's Get Started!" />
         </form>
       </div>
     </Layout>

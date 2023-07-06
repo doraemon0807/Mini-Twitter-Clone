@@ -218,7 +218,7 @@ const CountsReplies = () => {
           />
         ))}
       </div>
-      <form onSubmit={handleSubmit(onValid)} className="px-4">
+      <form onSubmit={handleSubmit(onValid)} className="w-full">
         <TextArea
           register={register("answer", {
             required: "You must enter your answer before replying.",
