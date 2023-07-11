@@ -26,7 +26,11 @@ export default function useMutation<T = any>(
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json().catch((error) => {}))
+      .then((response) =>
+        response.json().catch((error) => {
+          console.log(error);
+        })
+      )
       .then((data) => setState((prev) => ({ ...prev, data })))
       .catch((error) => setState((prev) => ({ ...prev, error })))
       .finally(() => setState((prev) => ({ ...prev, loading: false })));
