@@ -7,7 +7,7 @@ export const config = {
 
 const cookieOptions = {
   cookieName: "minitwittersession",
-  password: process.env.COOKIE_PASSWORD!,
+  password: "98nv94p3nq49ou92q4nu3v2mfjv98qht9824nb9p42n3vmi4j3q",
 };
 
 export async function middleware(req: NextRequest) {
