@@ -1,5 +1,5 @@
 import { getIronSession } from "iron-session/edge";
-import { NextRequest, NextResponse, userAgent } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
   matcher: ["/((?!api|_next/static|favicon.ico).*)"],
@@ -14,9 +14,9 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
   const session = await getIronSession(req, res, cookieOptions);
 
-  if (userAgent(req).isBot) {
-    return new Response("Please don't be a bot. Be human", { status: 403 });
-  }
+  // if (userAgent(req).isBot) {
+  //   return new Response("Please don't be a bot. Be human", { status: 403 });
+  // }
 
   //check if user is logged in or not, then redirect to enter or home
   if (!req.url.includes("/api") && !req.url.includes("/_next/image")) {
