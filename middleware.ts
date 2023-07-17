@@ -5,15 +5,15 @@ export const config = {
   matcher: ["/((?!api|_next/static|favicon.ico).*)"],
 };
 
-const cookieOptions = {
-  cookieName: "minitwittersession",
-  password: "98nv94p3nq49ou92q4nu3v2mfjv98qht9824nb9p42n3vmi4j3q",
-};
-
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  const session = await getIronSession(req, res, cookieOptions);
 
+  const cookieOptions = {
+    cookieName: "minitwittersession",
+    password: process.env.COOKIE_PASSWORD!,
+  };
+
+  const session = await getIronSession(req, res, cookieOptions);
   // if (userAgent(req).isBot) {
   //   return new Response("Please don't be a bot. Be human", { status: 403 });
   // }
@@ -24,6 +24,12 @@ export async function middleware(req: NextRequest) {
     if (!session.user && !req.url.includes("/enter")) {
       return NextResponse.redirect(new URL("/enter", req.url));
     }
+
+    //if user is PRESENT but not AUTH, and tries to get in
+    if (session.user && !session.user.auth && !req.url.includes("/enter")) {
+      return NextResponse.redirect(new URL("/enter", req.url));
+    }
+
     //if user is PRESENT but not SETUP, and tries to get in
     if (session.user && !session.user.setup) {
       if (req.url.includes("/setup") || req.url.includes("/enter")) {

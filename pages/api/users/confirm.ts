@@ -17,6 +17,7 @@ async function handler(
         select: {
           id: true,
           setup: true,
+          auth: true,
         },
       },
     },
@@ -30,6 +31,7 @@ async function handler(
   req.session.user = {
     id: foundToken.userId,
     setup: foundToken.user.setup || false,
+    auth: true,
   };
 
   await req.session.save();
@@ -39,6 +41,16 @@ async function handler(
       userId: foundToken.userId,
     },
   });
+
+  await db.user.update({
+    where: {
+      id: req.session.user.id,
+    },
+    data: {
+      auth: true,
+    },
+  });
+
   res.json({ ok: true });
 }
 
