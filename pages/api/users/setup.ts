@@ -8,7 +8,7 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   const {
-    body: { name, username, description },
+    body: { name, username, description, avatarColor },
     session: { user },
   } = req;
 
@@ -45,6 +45,7 @@ async function handler(
       name,
       username,
       description,
+      avatarColor,
       setup: true,
     },
   });
@@ -52,6 +53,7 @@ async function handler(
   req.session.user = {
     id: currentUser.id,
     setup: newUser.setup || true,
+    auth: true,
   };
 
   await req.session.save();

@@ -140,15 +140,15 @@ const Enter: NextPage = () => {
               <div className="space-y-3">
                 <Input
                   register={confirmRegister("token", {
-                    required: "Please enter your token.",
+                    required: "Please enter your verification code.",
                   })}
                   name="token"
-                  label="Confirmation Token"
+                  label="Verification Code"
                   kind="text"
                   required
                 />
                 <ErrorMessage>{confirmData?.error}</ErrorMessage>
-                <Button loading={confirmLoading} text="Confirm Token" />
+                <Button loading={confirmLoading} text="Confirm Code" />
               </div>
             </form>
           </>

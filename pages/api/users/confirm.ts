@@ -25,7 +25,7 @@ async function handler(
   if (!foundToken)
     return res.status(404).json({
       ok: false,
-      error: "The token is incorrect. Please try again.",
+      error: "The code is incorrect. Please try again.",
     });
 
   req.session.user = {

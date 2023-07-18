@@ -22,7 +22,7 @@ export default function Avatar({
       className={cls(
         "relative overflow-hidden rounded-full",
         size === "small"
-          ? "h-8 w-8 min-w-[40px]"
+          ? "h-8 w-8 min-w-[32px]"
           : size === "big"
           ? "h-20 w-20 min-w-[80px]"
           : "h-10 w-10 min-w-[40px]",

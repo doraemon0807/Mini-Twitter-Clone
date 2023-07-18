@@ -16,6 +16,7 @@ interface SetupForm {
   username: string;
   name: string;
   description: string;
+  avatarColor: string;
 }
 
 interface SetupResult {
