@@ -22,6 +22,7 @@ export async function middleware(req: NextRequest) {
   if (!req.url.includes("/api") && !req.url.includes("/_next/image")) {
     //if user is MISSING and tries to get in
     if (!session.user && !req.url.includes("/enter")) {
+      console.log(`User not found. Redirecting to Enter`);
       return NextResponse.redirect(new URL("/enter", req.url));
     }
 
