@@ -39,13 +39,13 @@ export async function middleware(req: NextRequest) {
       }
     }
     //if user is SETUP and tries to go to enter or setup page
-    // if (
-    //   session.user &&
-    //   session.user.setup &&
-    //   (req.url.includes("/enter") || req.url.includes("/setup"))
-    // ) {
-    //   return NextResponse.redirect(new URL("/", req.url));
-    // }
+    if (
+      session.user &&
+      session.user.setup &&
+      (req.url.includes("/enter") || req.url.includes("/setup"))
+    ) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
 
     if (req.nextUrl.pathname === "/profile") {
       return NextResponse.redirect(
