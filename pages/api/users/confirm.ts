@@ -28,10 +28,15 @@ async function handler(
       error: "The code is incorrect. Please try again.",
     });
 
+  // req.session.user = {
+  //   id: foundToken.userId,
+  //   setup: foundToken.user.setup || false,
+  //   auth: true,
+  // };
+
   req.session.user = {
     id: foundToken.userId,
     setup: foundToken.user.setup || false,
-    auth: true,
   };
 
   await req.session.save();
