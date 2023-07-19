@@ -22,7 +22,6 @@ export async function middleware(req: NextRequest) {
   if (!req.url.includes("/api") && !req.url.includes("/_next/image")) {
     //if user is MISSING and tries to get in
     if (!session.user && !req.url.includes("/enter")) {
-      console.log(`User not found. Redirecting to Enter`);
       return NextResponse.redirect(new URL("/enter", req.url));
     }
 
@@ -36,9 +35,6 @@ export async function middleware(req: NextRequest) {
       if (req.url.includes("/setup") || req.url.includes("/enter")) {
         return;
       } else {
-        console.log(
-          `User setup status: ${session.user.setup}. Redirecting to setup screen`
-        );
         return NextResponse.redirect(new URL("/setup", req.url));
       }
     }
@@ -48,9 +44,6 @@ export async function middleware(req: NextRequest) {
       session.user.setup &&
       (req.url.includes("/enter") || req.url.includes("/setup"))
     ) {
-      console.log(
-        `User status: auth ${session.user.auth}, setup ${session.user.setup}. Redirecting to main screen`
-      );
       return NextResponse.redirect(new URL("/", req.url));
     }
 

@@ -5,7 +5,6 @@ declare module "iron-session" {
     user?: {
       id: number;
       setup?: boolean;
-      auth?: boolean;
     };
   }
 }
