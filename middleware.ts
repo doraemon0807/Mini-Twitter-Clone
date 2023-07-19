@@ -31,21 +31,21 @@ export async function middleware(req: NextRequest) {
     // }
 
     //if user is PRESENT but not SETUP, and tries to get in
-    // if (session.user && !session.user.setup) {
-    //   if (req.url.includes("/setup") || req.url.includes("/enter")) {
-    //     return;
-    //   } else {
-    //     return NextResponse.redirect(new URL("/setup", req.url));
-    //   }
-    // }
-    //if user is SETUP and tries to go to enter or setup page
-    if (
-      session.user &&
-      session.user.setup &&
-      (req.url.includes("/enter") || req.url.includes("/setup"))
-    ) {
-      return NextResponse.redirect(new URL("/", req.url));
+    if (session.user && !session.user.setup) {
+      if (req.url.includes("/setup") || req.url.includes("/enter")) {
+        return;
+      } else {
+        return NextResponse.redirect(new URL("/setup", req.url));
+      }
     }
+    //if user is SETUP and tries to go to enter or setup page
+    // if (
+    //   session.user &&
+    //   session.user.setup &&
+    //   (req.url.includes("/enter") || req.url.includes("/setup"))
+    // ) {
+    //   return NextResponse.redirect(new URL("/", req.url));
+    // }
 
     if (req.nextUrl.pathname === "/profile") {
       return NextResponse.redirect(
