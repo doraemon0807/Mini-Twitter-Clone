@@ -49,7 +49,7 @@ const Setup: NextPage = () => {
 
   useEffect(() => {
     if (data && data.ok) {
-      router.push("/");
+      router.push("/404");
     }
   }, [data, router]);
 
