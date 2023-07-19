@@ -46,6 +46,9 @@ export async function middleware(req: NextRequest) {
         req.url.includes("/setup") ||
         req.nextUrl.pathname === "/"
       ) {
+        console.log(
+          `redirecting to /home because pathname is ${req.nextUrl.pathname}`
+        );
         return NextResponse.redirect(new URL("/home", req.url));
       }
     }
