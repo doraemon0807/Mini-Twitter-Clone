@@ -129,7 +129,9 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
 
   useEffect(() => {
     if (data && data.ok) {
-      router.push("/enter");
+      setTimeout(() => {
+        router.push("/enter");
+      }, 1000);
     }
   }, [router, data]);
 
