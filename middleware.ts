@@ -26,13 +26,10 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/enter", req.url));
     }
 
-    //if user is PRESENT but not AUTH, and tries to get in
-    // if (session.user && !session.user.auth && !req.url.includes("/enter")) {
-    //   console.log(
-    //     `User auth status: ${session.user.auth}. Redirecting to Enter`
-    //   );
-    //   return NextResponse.redirect(new URL("/enter", req.url));
-    // }
+    //if user is AUTH, but tries to go to enter
+    if (session.user && session.user.auth && req.url.includes("/enter")) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
 
     //if user is PRESENT but not SETUP, and tries to get in
     if (session.user && !session.user.setup) {
