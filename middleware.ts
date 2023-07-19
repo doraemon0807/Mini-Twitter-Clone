@@ -2,7 +2,7 @@ import { getIronSession } from "iron-session/edge";
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
-  matcher: ["/((?!api|_next/static|favicon.ico).*)"],
+  matcher: ["/((?!api|_next/static|favicon/favicon.ico).*)"],
 };
 
 export async function middleware(req: NextRequest) {
@@ -45,7 +45,7 @@ export async function middleware(req: NextRequest) {
       (req.url.includes("/enter") || req.url.includes("/setup"))
     ) {
       console.log(`req.url is: ${req.url}`);
-      return NextResponse.redirect(new URL("/", req.url));
+      return NextResponse.redirect(new URL("/404", req.url));
     }
 
     if (req.nextUrl.pathname === "/profile") {

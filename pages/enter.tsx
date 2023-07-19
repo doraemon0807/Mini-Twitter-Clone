@@ -109,7 +109,7 @@ const Enter: NextPage = () => {
   useEffect(() => {
     if (confirmData && confirmData.ok) {
       if (confirmData.authUser.setup) {
-        router.push("/enter", "/");
+        router.push("/");
         // window.location.href = "/";
       } else {
         router.push("/setup");
