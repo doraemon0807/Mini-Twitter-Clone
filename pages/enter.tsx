@@ -98,13 +98,13 @@ const Enter: NextPage = () => {
     confirm(form);
   };
 
-  // useEffect(() => {
-  //   if (enterData && enterData.token) {
-  //     setTimeout(() => {
-  //       alert(`Your token is ${enterData.token.payload}`);
-  //     }, 1000);
-  //   }
-  // }, [enterData]);
+  useEffect(() => {
+    if (enterData && enterData.token) {
+      setTimeout(() => {
+        alert(`Your token is ${enterData.token.payload}`);
+      }, 1000);
+    }
+  }, [enterData]);
 
   useEffect(() => {
     if (confirmData && confirmData.ok) {

@@ -59,33 +59,33 @@ async function handler(
     });
   }
 
-  if (phone) {
-    // Send token to phone number
-    const message = await twilioClient.messages.create({
-      messagingServiceSid: process.env.TWILIO_MSID,
-      to: phone,
-      from: process.env.TWILIO_PHONE,
-      body: `Your verification code is ${payload}.`,
-    });
-    console.log(message);
-  } else if (email) {
-    // Send token to email
-    const email = await mail.send(
-      process.env.EMALIJS_SID!,
-      process.env.EMALIJS_TEMPID!,
-      {
-        to_name: req.body.email,
-        from_name: "Mini-Twitter Team",
-        subject: "Mini-Twitter Verification Code",
-        html: `<strong>Your verification code is ${payload}.</strong>`,
-      },
-      {
-        publicKey: process.env.EMAILJS_PUBKEY!,
-        privateKey: process.env.EMALJS_PRIVATEKEY!,
-      }
-    );
-    console.log(email);
-  }
+  // if (phone) {
+  //   // Send token to phone number
+  //   const message = await twilioClient.messages.create({
+  //     messagingServiceSid: process.env.TWILIO_MSID,
+  //     to: phone,
+  //     from: process.env.TWILIO_PHONE,
+  //     body: `Your verification code is ${payload}.`,
+  //   });
+  //   console.log(message);
+  // } else if (email) {
+  //   // Send token to email
+  //   const email = await mail.send(
+  //     process.env.EMALIJS_SID!,
+  //     process.env.EMALIJS_TEMPID!,
+  //     {
+  //       to_name: req.body.email,
+  //       from_name: "Mini-Twitter Team",
+  //       subject: "Mini-Twitter Verification Code",
+  //       html: `<strong>Your verification code is ${payload}.</strong>`,
+  //     },
+  //     {
+  //       publicKey: process.env.EMAILJS_PUBKEY!,
+  //       privateKey: process.env.EMALJS_PRIVATEKEY!,
+  //     }
+  //   );
+  //   console.log(email);
+  // }
 
   return res.json({
     ok: true,

@@ -34,11 +34,6 @@ async function handler(
     },
   });
 
-  req.session.user = {
-    id: currentUser.id,
-    auth: false,
-  };
-
   req.session.destroy();
 
   return res.json({ ok: true });
