@@ -154,7 +154,7 @@ const Enter: NextPage = () => {
           </>
         ) : (
           <>
-            <h3 className="mb-20 px-20 text-[50px] font-medium leading-[1.3]">
+            <h3 className="mb-20 px-12 text-[50px] font-medium leading-[1.3]">
               See what's happening in the world right now.
             </h3>
             <div className="flex flex-col items-center">
