@@ -3,10 +3,10 @@ import withHandler, { ResponseType } from "@/lib/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withApiSession } from "@/lib/withSession";
 import { randColor, randomColorPicker } from "@/lib/utils";
-import twilio from "twilio";
-import mail from "@emailjs/nodejs";
+// import twilio from "twilio";
+// import mail from "@emailjs/nodejs";
 
-const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
+// const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 interface LoginProps {
   phone?: string;
