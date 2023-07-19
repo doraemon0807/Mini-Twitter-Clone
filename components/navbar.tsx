@@ -11,12 +11,12 @@ export default function NavBar() {
   return (
     <nav className="fixed bottom-0 flex w-full max-w-xl items-center justify-evenly bg-white px-10 py-5 text-gray-800">
       <Link
-        href="/"
+        href="/home"
         className="flex h-12 w-12 flex-col items-center"
         data-tooltip-id="allTweets"
         data-tooltip-content="All Tweets"
       >
-        {router.pathname === "/" ? (
+        {router.pathname === "/home" ? (
           <svg
             fill="none"
             stroke="gray"
