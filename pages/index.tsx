@@ -1,11 +1,10 @@
-import db from "@/lib/db";
 import Layout from "@/components/layout";
 import useInfiniteScroll from "@/lib/useInfiniteScroll";
 import { Tweet, User } from "@prisma/client";
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import React, { useEffect } from "react";
-import { SWRConfig } from "swr";
-import useSWRInfinite, { unstable_serialize } from "swr/infinite";
+// import { SWRConfig } from "swr";
+import useSWRInfinite from "swr/infinite";
 import TweetPost from "@/components/tweet";
 import Link from "next/link";
 
@@ -81,59 +80,61 @@ const Home: NextPage = () => {
   );
 };
 
-const homePage: NextPage<TweetsResponse> = ({ tweets, totalPage }) => {
-  return (
-    <SWRConfig
-      value={{
-        fallback: {
-          [unstable_serialize(getKey)]: [{ ok: true, tweets, totalPage }],
-        },
-      }}
-    >
-      <Home />
-    </SWRConfig>
-  );
-};
+export default Home;
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const tweets = await db.tweet.findMany({
-    take: 10,
-    skip: 0,
-    orderBy: [
-      {
-        createdAt: "desc",
-      },
-      {
-        id: "desc",
-      },
-    ],
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          username: true,
-          avatarColor: true,
-        },
-      },
-      _count: {
-        select: {
-          liked: true,
-          reply: true,
-        },
-      },
-    },
-  });
+// const homePage: NextPage<TweetsResponse> = ({ tweets, totalPage }) => {
+//   return (
+//     <SWRConfig
+//       value={{
+//         fallback: {
+//           [unstable_serialize(getKey)]: [{ ok: true, tweets, totalPage }],
+//         },
+//       }}
+//     >
+//       <Home />
+//     </SWRConfig>
+//   );
+// };
 
-  const tweetCount = await db.tweet.count();
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const tweets = await db.tweet.findMany({
+//     take: 10,
+//     skip: 0,
+//     orderBy: [
+//       {
+//         createdAt: "desc",
+//       },
+//       {
+//         id: "desc",
+//       },
+//     ],
+//     include: {
+//       user: {
+//         select: {
+//           id: true,
+//           name: true,
+//           username: true,
+//           avatarColor: true,
+//         },
+//       },
+//       _count: {
+//         select: {
+//           liked: true,
+//           reply: true,
+//         },
+//       },
+//     },
+//   });
 
-  return {
-    props: {
-      ok: true,
-      tweets: JSON.parse(JSON.stringify(tweets)),
-      totalPage: Math.ceil(tweetCount / 10),
-    },
-  };
-};
+//   const tweetCount = await db.tweet.count();
 
-export default homePage;
+//   return {
+//     props: {
+//       ok: true,
+//       tweets: JSON.parse(JSON.stringify(tweets)),
+//       totalPage: Math.ceil(tweetCount / 10),
+//     },
+//   };
+// };
+
+// export default homePage;
