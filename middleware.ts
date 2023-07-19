@@ -44,6 +44,7 @@ export async function middleware(req: NextRequest) {
       session.user.setup &&
       (req.url.includes("/enter") || req.url.includes("/setup"))
     ) {
+      console.log(`req.url is: ${req.url}`);
       return NextResponse.redirect(new URL("/", req.url));
     }
 
