@@ -27,9 +27,9 @@ export async function middleware(req: NextRequest) {
     }
 
     //if user is AUTH, but tries to go to enter
-    if (session.user && session.user.auth && req.url.includes("/enter")) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
+    // if (session.user && session.user.auth && req.url.includes("/enter")) {
+    //   return NextResponse.redirect(new URL("/", req.url));
+    // }
 
     //if user is PRESENT but not SETUP, and tries to get in
     if (session.user && !session.user.setup) {
