@@ -27,7 +27,9 @@ export async function middleware(req: NextRequest) {
 
     //if user is PRESENT but not AUTH, and tries to get in
     if (session.user && !session.user.auth && !req.url.includes("/enter")) {
-      console.log(`User status: ${session.user}. Redirecting to Enter`);
+      console.log(
+        `User auth status: ${session.user.auth}. Redirecting to Enter`
+      );
       return NextResponse.redirect(new URL("/enter", req.url));
     }
 
@@ -37,7 +39,7 @@ export async function middleware(req: NextRequest) {
         return;
       } else {
         console.log(
-          `User status: ${session.user}. Redirecting to setup screen`
+          `User setup status: ${session.user.setup}. Redirecting to setup screen`
         );
         return NextResponse.redirect(new URL("/setup", req.url));
       }
@@ -48,7 +50,9 @@ export async function middleware(req: NextRequest) {
       session.user.setup &&
       (req.url.includes("/enter") || req.url.includes("/setup"))
     ) {
-      console.log(`User status: ${session.user}. Redirecting to main screen`);
+      console.log(
+        `User status: auth ${session.user.auth}, setup ${session.user.setup}. Redirecting to main screen`
+      );
       return NextResponse.redirect(new URL("/", req.url));
     }
 
