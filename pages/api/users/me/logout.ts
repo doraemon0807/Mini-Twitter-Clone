@@ -36,6 +36,8 @@ async function handler(
 
   req.session.destroy();
 
+  setTimeout(() => {}, 2000);
+
   return res.json({ ok: true });
 }
 

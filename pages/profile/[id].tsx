@@ -129,9 +129,8 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
 
   useEffect(() => {
     if (data && data.ok) {
-      setTimeout(() => {
-        router.push("/enter");
-      }, 1000);
+      console.log("logging out!");
+      router.push("/enter");
     }
   }, [router, data]);
 
