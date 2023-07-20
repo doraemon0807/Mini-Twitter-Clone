@@ -2,7 +2,7 @@ import { getIronSession } from "iron-session/edge";
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
-  matcher: ["/((?!api|_next/static|favicon.ico).*)"],
+  matcher: ["/((?!api|_next/static|favicon/favicon.ico).*)"],
 };
 
 export async function middleware(req: NextRequest) {
@@ -22,13 +22,14 @@ export async function middleware(req: NextRequest) {
   if (!req.url.includes("/api") && !req.url.includes("/_next/image")) {
     //if user is MISSING and tries to get in
     if (!session.user && !req.url.includes("/enter")) {
+      console.log("moving to enter page!");
       return NextResponse.redirect(new URL("/enter", req.url));
     }
 
-    //if user is PRESENT but not AUTH, and tries to get in
-    if (session.user && !session.user.auth && !req.url.includes("/enter")) {
-      return NextResponse.redirect(new URL("/enter", req.url));
-    }
+    //if user is AUTH, but tries to go to enter
+    // if (session.user && session.user.auth && req.url.includes("/enter")) {
+    //   return NextResponse.redirect(new URL("/", req.url));
+    // }
 
     //if user is PRESENT but not SETUP, and tries to get in
     if (session.user && !session.user.setup) {
@@ -39,12 +40,17 @@ export async function middleware(req: NextRequest) {
       }
     }
     //if user is SETUP and tries to go to enter or setup page
-    if (
-      session.user &&
-      session.user.setup &&
-      (req.url.includes("/enter") || req.url.includes("/setup"))
-    ) {
-      return NextResponse.redirect(new URL("/", req.url));
+    if (session.user && session.user.setup) {
+      if (
+        req.url.includes("/enter") ||
+        req.url.includes("/setup") ||
+        req.nextUrl.pathname === "/"
+      ) {
+        console.log(
+          `redirecting to /home because pathname is ${req.nextUrl.pathname}`
+        );
+        return NextResponse.redirect(new URL("/home", req.url));
+      }
     }
 
     if (req.nextUrl.pathname === "/profile") {

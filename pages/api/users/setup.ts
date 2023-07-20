@@ -50,10 +50,15 @@ async function handler(
     },
   });
 
+  // req.session.user = {
+  //   id: currentUser.id,
+  //   setup: newUser.setup || true,
+  //   auth: true,
+  // };
+
   req.session.user = {
     id: currentUser.id,
     setup: newUser.setup || true,
-    auth: true,
   };
 
   await req.session.save();

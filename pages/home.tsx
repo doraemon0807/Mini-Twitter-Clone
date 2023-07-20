@@ -1,11 +1,9 @@
-import db from "@/lib/db";
 import Layout from "@/components/layout";
 import useInfiniteScroll from "@/lib/useInfiniteScroll";
 import { Tweet, User } from "@prisma/client";
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import React, { useEffect } from "react";
-import { SWRConfig } from "swr";
-import useSWRInfinite, { unstable_serialize } from "swr/infinite";
+import useSWRInfinite from "swr/infinite";
 import TweetPost from "@/components/tweet";
 import Link from "next/link";
 
@@ -53,7 +51,7 @@ const Home: NextPage = () => {
             )}
           </div>
         ) : (
-          <h1>Be the first one to tweet!</h1>
+          <></>
         )}
 
         <Link
@@ -81,59 +79,4 @@ const Home: NextPage = () => {
   );
 };
 
-const homePage: NextPage<TweetsResponse> = ({ tweets, totalPage }) => {
-  return (
-    <SWRConfig
-      value={{
-        fallback: {
-          [unstable_serialize(getKey)]: [{ ok: true, tweets, totalPage }],
-        },
-      }}
-    >
-      <Home />
-    </SWRConfig>
-  );
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const tweets = await db.tweet.findMany({
-    take: 10,
-    skip: 0,
-    orderBy: [
-      {
-        createdAt: "desc",
-      },
-      {
-        id: "desc",
-      },
-    ],
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          username: true,
-          avatarColor: true,
-        },
-      },
-      _count: {
-        select: {
-          liked: true,
-          reply: true,
-        },
-      },
-    },
-  });
-
-  const tweetCount = await db.tweet.count();
-
-  return {
-    props: {
-      ok: true,
-      tweets: JSON.parse(JSON.stringify(tweets)),
-      totalPage: Math.ceil(tweetCount / 10),
-    },
-  };
-};
-
-export default homePage;
+export default Home;

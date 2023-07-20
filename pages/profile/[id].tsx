@@ -129,7 +129,8 @@ const Profile: NextPage<ProfileResponseSsr> = ({ profile, myProfile }) => {
 
   useEffect(() => {
     if (data && data.ok) {
-      router.push("/enter");
+      console.log("logging out!");
+      window.location.reload();
     }
   }, [router, data]);
 

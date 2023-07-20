@@ -4,7 +4,7 @@ import Input from "@/components/input";
 import Layout from "@/components/layout";
 import useMutation from "@/lib/useMutation";
 import { cls } from "@/lib/utils";
-import { Token } from "@prisma/client";
+import { Token, User } from "@prisma/client";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -22,6 +22,7 @@ interface ConfirmForm {
 interface ConfirmResult {
   ok: boolean;
   error?: string;
+  authUser: User;
 }
 
 interface EnterResult {
@@ -107,7 +108,12 @@ const Enter: NextPage = () => {
 
   useEffect(() => {
     if (confirmData && confirmData.ok) {
-      router.push("/setup");
+      if (confirmData.authUser.setup) {
+        router.push("/");
+        // window.location.href = "/";
+      } else {
+        router.push("/setup");
+      }
     }
   }, [confirmData, router]);
 
